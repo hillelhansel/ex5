@@ -4,7 +4,7 @@ public class VarFactory {
     private VarFactory() {
     }
 
-    public SObject getObject(String name, boolean isFinal, boolean isInitialized, VarTypes type, String value) {
+    public SObject getObject(String name, boolean isFinal, boolean isInitialized, VarTypes type, String value) throws InvalidValueException {
         switch (type) {
             case SSTRING:
                 return new SString(name, isFinal, isInitialized, value);

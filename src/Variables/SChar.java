@@ -4,9 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SChar extends SObject {
-    public SChar(String name, boolean isFinal, boolean isInitialized, String value) {
+    public SChar(String name, boolean isFinal, boolean isInitialized, String value) throws InvalidValueException {
         super(name, isFinal, isInitialized, VarTypes.SCHAR);
-        isValidInput(value);
+        if (isInitialized && !isValidInput(value)) {
+            throw new InvalidValueException(value, type);
+        }
     }
 
     @Override
