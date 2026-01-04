@@ -1,7 +1,7 @@
 package Variables;
 
 public class VarFactory {
-    private VarFactory() {
+    public VarFactory() {
     }
 
     public SObject getObject(String name, boolean isFinal, boolean isInitialized, VarTypes type, String value) throws InvalidValueException {

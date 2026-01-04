@@ -1,0 +1,14 @@
+package Main;
+
+public enum LineType {
+    VARIABLE_DECLARATION,
+    ASSIGNMENT,
+    METHOD_DECLARATION,
+    METHOD_CALL,
+    IF_WHILE_BLOCK,
+    RETURN,
+    CLOSING_BRACKET,
+    COMMENT,
+    EMPTY_LINE,
+    INVALID
+}

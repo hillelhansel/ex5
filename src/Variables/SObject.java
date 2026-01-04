@@ -1,6 +1,6 @@
 package Variables;
 
-abstract class SObject {
+public abstract class SObject {
     protected final boolean isFinal;
     protected String name;
     protected boolean isInitialized;
