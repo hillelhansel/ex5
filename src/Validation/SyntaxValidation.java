@@ -1,45 +1,78 @@
 package Validation;
 
-import Main.Line;
-import Main.LineType;
+import CodeParser.Line;
+import CodeParser.LineType;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class SyntaxValidation {
-    private static final String VAR_NAME = "(?:[a-zA-Z][a-zA-Z\\d_]*|_[a-zA-Z][a-zA-Z\\d_]*)";
-    private static final String TYPE = "(int|double|String|boolean|char)";
 
+    private static final String VAR_NAME = "(?:[a-zA-Z][a-zA-Z\\d_]*|_[a-zA-Z][a-zA-Z\\d_]*)";
+    private static final String METHOD_NAME = "(?:[a-zA-Z][a-zA-Z\\d_]*)";
+
+    private static final String VAR_TYPE = "(int|double|String|boolean|char)\\b";
+    private static final String FINAL = "(final\\s+)?";
+
+    private static final String LOGICAL_OPS = "\\s*(\\|\\||&&)\\s*";
+
+    private static final String INT_REGEX = "[+-]?\\d+";
+    private static final String DOUBLE_REGEX = "[+-]?\\d+\\.\\d+";
+    private static final String STRING_REGEX = "\"[^\"]*\"";
+    private static final String CHAR_REGEX = "'[^']'";
+    private static final String BOOLEAN_REGEX = "(true|false)";
+
+    private static final String ARGUMENT = "(" +
+            INT_REGEX + "|" +
+            DOUBLE_REGEX + "|" +
+            STRING_REGEX + "|" +
+            CHAR_REGEX + "|" +
+            BOOLEAN_REGEX + "|" +
+            VAR_NAME +
+            ")";
     private static final Pattern VARIABLE_DECLARATION_PATTERN = Pattern.compile(
-            "^\\s*(final\\s+)?" + TYPE + "\\s+" + VAR_NAME + "(\\s*=\\s*[^,;]+)?" + "(\\s*,\\s*"
-                    + VAR_NAME + "(\\s*=\\s*[^,;]+)?)*" + "\\s*;\\s*$"
+            "^\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME +
+                    "(\\s*=\\s*" + ARGUMENT + ")?" +
+                    "(\\s*,\\s*" + VAR_NAME +
+                    "(\\s*=\\s*" + ARGUMENT + ")?)*" +
+                    "\\s*;\\s*$"
     );
+
     private static final Pattern ASSIGNMENT_PATTERN = Pattern.compile(
-            "^\\s*" + VAR_NAME + "\\s*=\\s*[^,;]+\\s*;\\s*$"
+            "^\\s*" + VAR_NAME + "\\s*=\\s*" + ARGUMENT + "\\s*;\\s*$"
     );
     private static final Pattern METHOD_DECLARATION_PATTERN = Pattern.compile(
-            "^\\s*void\\s+" + VAR_NAME + "\\s*\\(\\s*" + "(" + TYPE + "\\s+" + VAR_NAME + "(\\s*,\\s*"
-                    + TYPE + "\\s+" + VAR_NAME + ")*" + ")?" + "\\s*\\)\\s*\\{\\s*$"
+            "^\\s*void\\s+" + METHOD_NAME + "\\s*\\(\\s*" +
+                    "(" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME +
+                    "(\\s*,\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + ")*" +
+                    ")?" +
+                    "\\s*\\)\\s*\\{\\s*$"
     );
+
     private static final Pattern METHOD_CALL_PATTERN = Pattern.compile(
-            "^\\s*" + VAR_NAME + "\\s*\\(\\s*" + "(" + TYPE + "\\s+" + VAR_NAME + "(\\s*,\\s*"
-                    + TYPE + "\\s+" + VAR_NAME + ")*" + ")?" + "\\s*\\)\\s*\\;\\s*$"
+            "^\\s*" + METHOD_NAME + "\\s*\\(\\s*" +
+                    "(" + ARGUMENT + "(\\s*,\\s*" + ARGUMENT + ")*" + ")?" +
+                    "\\s*\\)\\s*\\;\\s*$"
     );
+
     private static final Pattern IF_WHILE_BLOCK_PATTERN = Pattern.compile(
-            "^\\s*(if|while)\\s*\\(\\s*" + "(\\s+" + VAR_NAME + "(\\s*,\\s*"
-                    + TYPE + "\\s+" + VAR_NAME + ")*" + ")?" + "\\s*\\)\\s*\\}\\s*$"
+            "^\\s*(if|while)\\s*\\(\\s*" +
+                    ARGUMENT +
+                    "(" + LOGICAL_OPS + ARGUMENT + ")*" +
+                    "\\s*\\)\\s*\\{\\s*$"
     );
 
     private static final Pattern RETURN_PATTERN = Pattern.compile("^\\s*return\\s*;\\s*$");
     private static final Pattern CLOSING_BRACKET_PATTERN = Pattern.compile("^\\s*}\\s*$");
 
+
     public void validateSynatx(ArrayList<Line> code) throws SyntaxException {
         for (Line line : code) {
             String content = line.getContent();
             LineType lineType = line.getLineType();
+
             if (!isValid(content, lineType)) {
-                //todo
-                throw new SyntaxException(line.getLineIndex(), "invalid syntax");
+                throw new SyntaxException(line.getLineIndex());
             }
         }
     }
@@ -60,7 +93,6 @@ public class SyntaxValidation {
                 return RETURN_PATTERN.matcher(line).matches();
             case CLOSING_BRACKET:
                 return CLOSING_BRACKET_PATTERN.matcher(line).matches();
-
             default:
                 return false;
         }

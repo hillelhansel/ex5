@@ -1,4 +1,4 @@
-package Main;
+package CodeParser;
 
 public class Line {
     private String content;

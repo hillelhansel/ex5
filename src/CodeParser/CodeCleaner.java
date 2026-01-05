@@ -1,4 +1,4 @@
-package Main;
+package CodeParser;
 
 import Validation.SyntaxException;
 
@@ -20,7 +20,7 @@ public class CodeCleaner {
             lineIndex++;
             int commentIndex = line.indexOf("//");
             if(commentIndex > 0){
-                throw new SyntaxException(lineIndex, " - illegal comment format.");
+                throw new SyntaxException(lineIndex);
             }
 
             line = line.trim();
@@ -30,7 +30,7 @@ public class CodeCleaner {
 
             Matcher matcher = pattern.matcher(line);
             if(matcher.lookingAt()){
-                throw new SyntaxException(lineIndex, " - comment.");
+                throw new SyntaxException(lineIndex);
             }
             Line newLine = new Line(line, lineIndex, null);
             cleanedCode.add(newLine);

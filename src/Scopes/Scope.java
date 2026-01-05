@@ -1,6 +1,6 @@
 package Scopes;
 
-import Main.Line;
+import CodeParser.Line;
 import Variables.SObject;
 import Variables.VarTypes;
 

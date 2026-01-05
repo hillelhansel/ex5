@@ -1,6 +1,6 @@
 package Variables;
 
-import Main.IllegalCodeException;
+import main.IllegalCodeException;
 
 public class InvalidValueException extends IllegalCodeException {
     public InvalidValueException(String value, VarTypes type) {
