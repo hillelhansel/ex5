@@ -8,7 +8,5 @@ public enum LineType {
     IF_WHILE_BLOCK,
     RETURN,
     CLOSING_BRACKET,
-    COMMENT,
-    EMPTY_LINE,
     INVALID
 }

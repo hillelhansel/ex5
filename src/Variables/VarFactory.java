@@ -1,9 +1,6 @@
 package Variables;
 
 public class VarFactory {
-    public VarFactory() {
-    }
-
     public SObject getObject(String name, boolean isFinal, boolean isInitialized, VarTypes type, String value) throws InvalidValueException {
         switch (type) {
             case SSTRING:

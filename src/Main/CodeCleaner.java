@@ -1,5 +1,7 @@
 package Main;
 
+import Validation.SyntaxException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class CodeCleaner {
 
             Matcher matcher = pattern.matcher(line);
             if(matcher.lookingAt()){
-                throw new SyntaxException(lineIndex, " - syntax error.");
+                throw new SyntaxException(lineIndex, " - comment.");
             }
             Line newLine = new Line(line, lineIndex, null);
             cleanedCode.add(newLine);

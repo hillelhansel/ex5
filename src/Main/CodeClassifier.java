@@ -10,7 +10,6 @@ public class CodeClassifier {
         for(Line line : code) {
             line.setLineType(classifyLine(line.getContent()));
             if(line.getLineType() == LineType.INVALID) {
-                //todo
                 throw new UnSupportedArgumentException(line.getLineIndex());
             }
         }

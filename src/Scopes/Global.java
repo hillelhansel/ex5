@@ -1,7 +1,5 @@
 package Scopes;
 
-import Main.LineClassification;
-import Main.LineType;
 import Variables.VarFactory;
 
 import java.util.ArrayList;
@@ -20,10 +18,8 @@ public class Global extends Scope{
     }
 
     private void firstPass(ArrayList<String> lines){
-        LineClassification lineClassification = new LineClassification();
 
         for(int i = 0; i < lines.size(); i++){
-            LineType lineType = lineClassification.classifyLine(lines.get(i));
 
         }
     }

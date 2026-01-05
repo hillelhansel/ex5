@@ -9,10 +9,12 @@ public class Manager {
         CodeCleaner codeCleaner = new CodeCleaner();
         CodeClassifier codeClassifier = new CodeClassifier();
 
+
         try(Reader reader = new FileReader(filePath);
         BufferedReader bufferedReader = new BufferedReader(reader)){
             ArrayList<Line> cleanCode = codeCleaner.cleanCode(bufferedReader);
             codeClassifier.classifyCode(cleanCode);
+
         }
         catch (IOException e){
             System.out.println(2);

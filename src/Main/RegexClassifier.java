@@ -4,13 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
 public class RegexClassifier {
-    private static final String VAR_DECLARATION_PATTERN = "^\\s*(final\\s+)?(int|double|String|boolean|char)\\s+.*";
-    private static final String ASSIGNMENT_PATTERN = "^\\s*[a-zA-Z_]\\w*\\s*=.*";
-    private static final String METHOD_DECLARATION_PATTERN = "^\\s*void\\s+[a-zA-Z]\\w*\\s*\\(.*\\)\\s*\\{\\s*$";
-    private static final String METHOD_CALL_PATTERN = "^\\s*[a-zA-Z]\\w*\\s*\\(.*\\)\\s*;\\s*$";
-    private static final String IF_WHILE_PATTERN = "^\\s*(if|while)\\s*\\(.*\\)\\s*\\{\\s*$";
-    private static final String RETURN_PATTERN = "^\\s*return\\s*;\\s*$";
-    private static final String CLOSING_BLOCK_PATTERN = "^\\s*\\}\\s*$";
+    private static final String VAR_DECLARATION_PATTERN = "^\\.*(final\\s+)?(int|double|String|boolean|char)\\s+.*";
+    private static final String ASSIGNMENT_PATTERN = "^\\.*[a-zA-Z_]\\w*\\s*=.*";
+    private static final String METHOD_DECLARATION_PATTERN = "^\\.*void\\.*$";
+    private static final String METHOD_CALL_PATTERN = "^\\.*[a-zA-Z]\\w*\\s*\\(.*\\)\\.*$";
+    private static final String IF_WHILE_PATTERN = "^\\.*(if|while)\\.*$";
+    private static final String RETURN_PATTERN = "^\\.*return\\.*$";
+    private static final String CLOSING_BLOCK_PATTERN = "^\\.*\\}\\.*$";
 
     public static final LinkedHashMap<Pattern, LineType> patterns = new LinkedHashMap<>();
 

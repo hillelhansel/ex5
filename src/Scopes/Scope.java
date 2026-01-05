@@ -1,5 +1,6 @@
 package Scopes;
 
+import Main.Line;
 import Variables.SObject;
 import Variables.VarTypes;
 
@@ -8,13 +9,17 @@ import java.util.HashMap;
 
 public abstract class Scope {
     protected Scope parent;
-    protected final ArrayList<String> lines;
+    protected final ArrayList<Line> lines;
     protected final HashMap<String, SObject> localVariabels;
 
-    public Scope(Scope parent, ArrayList<String> lines) {
+    public Scope(Scope parent, ArrayList<Line> lines) {
         this.parent = parent;
         this.lines = lines;
         this.localVariabels = new HashMap<>();
+    }
+
+    protected ArrayList<Line> getLines() {
+        return lines;
     }
 
     protected boolean addVariabele(SObject sObject, String varName){
