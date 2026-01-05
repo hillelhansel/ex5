@@ -15,7 +15,7 @@ public abstract class SObject {
 
     public abstract boolean isValidInput(String value);
 
-    public void updateIntialiazes(){
+    public void updateInitializes(){
         isInitialized = true;
     }
 

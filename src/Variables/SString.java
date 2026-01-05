@@ -1,5 +1,7 @@
 package Variables;
 
+import CodeParser.RegexPatterns;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +15,7 @@ public class SString extends SObject{
 
     @Override
     public boolean isValidInput(String input) {
-        String regex = "^\"([^\"]+)\"$";
+        String regex = RegexPatterns.STRING;
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();

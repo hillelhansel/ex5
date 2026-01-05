@@ -1,5 +1,7 @@
 package Variables;
 
+import CodeParser.RegexPatterns;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +14,7 @@ public class SDouble extends SObject {
 
     @Override
     public boolean isValidInput(String input) {
-        String regex = "^[+-]?((\\d+\\.\\d+)|(\\.?\\d+)|(\\d+\\.))$";
+        String regex = RegexPatterns.DOUBLE;
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();

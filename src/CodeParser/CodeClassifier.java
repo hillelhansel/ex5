@@ -1,5 +1,6 @@
 package CodeParser;
 
+import static CodeParser.RegexPatterns.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,10 +8,6 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class CodeClassifier {
-    private static final String SPACE = "\\s*";
-    private static final String ANYTHING = ".*";
-    private static final String FINAL = "(final\\s+)?";
-    private static final String VAR_TYPE = "(int|double|String|boolean|char)\\b";
     private static final String VAR_DECLARATION = "^" + SPACE + FINAL + VAR_TYPE + ANYTHING;
     private static final String METHOD_DECLARATION = "^" + SPACE + "void\\b" + ANYTHING;
     private static final String RETURN = "^" + SPACE + "return\\b" + ANYTHING;

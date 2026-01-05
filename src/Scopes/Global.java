@@ -1,5 +1,6 @@
 package Scopes;
 
+import CodeParser.Line;
 import Variables.VarFactory;
 
 import java.util.ArrayList;
@@ -10,17 +11,15 @@ public class Global extends Scope{
     private final VarFactory varFactory;
 
 
-    public Global(Scope parent, ArrayList<String> lines) {
+    public Global(Scope parent, ArrayList<Line> lines) {
         super(parent, lines);
         this.varFactory = new VarFactory();
 
         firstPass(lines);
     }
 
-    private void firstPass(ArrayList<String> lines){
-
+    private void firstPass(ArrayList<Line> lines){
         for(int i = 0; i < lines.size(); i++){
-
         }
     }
 }

@@ -1,7 +1,7 @@
 package CodeParser;
 
 public class Line {
-    private String content;
+    private final String content;
     private final int lineIndex;
     private LineType lineType;
 

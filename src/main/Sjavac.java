@@ -33,7 +33,7 @@ public class Sjavac {
 
             ArrayList<Line> cleanCode = codeCleaner.cleanCode(bufferedReader);
             codeClassifier.classifyCode(cleanCode);
-            syntaxValidation.validateSynatx(cleanCode);
+            syntaxValidation.validateSyntax(cleanCode);
 
             System.out.println(0);
         }
