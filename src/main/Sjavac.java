@@ -1,12 +1,6 @@
 package main;
 
-import CodeParser.CodeClassifier;
-import CodeParser.CodeCleaner;
-import CodeParser.Line;
-import Validation.SyntaxValidation;
-
 import java.io.*;
-import java.util.ArrayList;
 
 public class Sjavac {
     public static void main(String[] args) {
@@ -23,27 +17,17 @@ public class Sjavac {
             System.err.println("Error: File must end with .sjava");
             return;
         }
-
-        CodeCleaner codeCleaner = new CodeCleaner();
-        CodeClassifier codeClassifier = new CodeClassifier();
-        SyntaxValidation syntaxValidation = new SyntaxValidation();
-
-        try (Reader reader = new FileReader(filePath);
-             BufferedReader bufferedReader = new BufferedReader(reader)) {
-
-            ArrayList<Line> cleanCode = codeCleaner.cleanCode(bufferedReader);
-            codeClassifier.classifyCode(cleanCode);
-            syntaxValidation.validateSyntax(cleanCode);
-
+        try {
+            new CompilerFlow().compile(args[0]);
             System.out.println(0);
         }
         catch (IOException e) {
             System.out.println(2);
-            System.err.println("IO Error: " + e.getMessage());
+            System.err.println(e.getMessage());
         }
         catch (IllegalCodeException e) {
             System.out.println(1);
-            System.err.println(e.getMessage());
+            System.err.println("IO Error: " + e.getMessage());
         }
         catch (Exception e) {
             System.out.println(2);

@@ -20,6 +20,11 @@ public class Global extends Scope{
 
     private void firstPass(ArrayList<Line> lines){
         for(int i = 0; i < lines.size(); i++){
+            switch (lines.get(i).getLineType()){
+                case METHOD_CALL ->
+                case VARIABLE_DECLARATION ->
+                default -> throw new IllegalStateException("Unexpected value: " + lines.get(i).getLineType());
+            }
         }
     }
 }
