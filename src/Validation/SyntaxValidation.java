@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class SyntaxValidation {
-    private static final String ARGUMENT = "(" + INT + "|" + DOUBLE + "|" + STRING + "|" + CHAR + "|" +
-            BOOLEAN + "|" + VAR_NAME + ")";
     private static final Pattern VARIABLE_DECLARATION_PATTERN = Pattern.compile(
             "^\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?" +
                     "(\\s*,\\s*" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?)*" + "\\s*;\\s*$"

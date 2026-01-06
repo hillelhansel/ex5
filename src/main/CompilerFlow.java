@@ -3,6 +3,7 @@ package main;
 import CodeParser.CodeClassifier;
 import CodeParser.CodeCleaner;
 import CodeParser.Line;
+import Scopes.Global;
 import Validation.SyntaxValidation;
 
 import java.io.BufferedReader;
@@ -22,6 +23,10 @@ public class CompilerFlow {
             classifier.classifyCode(lines);
 
             syntaxValidator.validateSyntax(lines);
+
+            Global global = new Global(null, lines);
+
+
         }
     }
 }
