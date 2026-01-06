@@ -7,6 +7,7 @@ import Scopes.Method;
 import Scopes.Scope;
 import Variables.InvalidValueException;
 import Variables.SObject;
+import Variables.VarTypes;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class ScopeValidation {
                     break;
                 case IF_WHILE_BLOCK:
                     IfWhileParsing ifWhileParsing = new IfWhileParsing(line);
-                    int blockLength = addIfWhile(ifWhileParsing, i);
+                    int blockLength = scope.addIfWhile(ifWhileParsing, i);
                     i += blockLength - 1;
                     break;
                 case ASSIGNMENT:
@@ -32,25 +33,41 @@ public class ScopeValidation {
                         if (doesObjectExists(var.getName())) {
                             throw
                         }
-                        SObject object = getObject(var.getName());
+                        SObject object = scope.getObject(var.getName());
                         object.setValue(var.getValue());
                     }
                     break;
                 case METHOD_CALL:
                     MethodCallingParsing methodCallingParsing = new MethodCallingParsing(line);
                     String methodName = methodCallingParsing.getMethodName();
-                    Method methodToCall = Global.getMethods().get(methodName);
+                    Global global = scope.getGlobalScope();
+                    Method methodToCall = global.getMethods().get(methodName);
                     if (methodToCall == null) {
-                        throw
+                        throw MethodDoNotExist
                     }
-                    ArrayList<String> parameters = methodCallingParsing.getMethodParameters();
-                    for (int i = 0; i < parameters.size(); i++) {
-                        MethodParameter methodParameter = ;
-                        if(isValidInput(parameters.get(i))) {}
 
+                    ArrayList<String> callParameters = methodCallingParsing.getMethodParameters();
+                    ArrayList<MethodParameter> methodParameters = methodToCall.getMethodParams();
+                    if(callParameters.size() != methodParameters.size()) {
+                        throw NotEnoughParam
+                    }
+
+                    for (int i = 0; i < callParameters.size(); i++) {
+                        String paramValue = callParameters.get(i);
+                        MethodParameter methodParameter = methodParameters.get(i);
+                        validateSingleCalling(paramValue, methodParameter, scope);
                     }
                     break;
             }
+        }
+    }
+
+    private void validateSingleCalling(String paramValue, MethodParameter methodParameter, Scope scope) throws Exception{
+        VarTypes expectedType = methodParameter.getType();
+
+        SObject object = scope.getObject(paramValue);
+        if(object != null){
+
         }
     }
 }

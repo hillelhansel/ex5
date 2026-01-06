@@ -18,7 +18,6 @@ public abstract class Scope {
     protected final HashMap<String, SObject> localVariables;
     protected final VarFactory varFactory;
 
-
     public Scope(Scope parent, ArrayList<Line> lines) {
         this.parent = parent;
         this.lines = lines;
@@ -39,6 +38,31 @@ public abstract class Scope {
             SObject localVar = varFactory.getObject(varName, isFinal, type, varValue);
             addVariable(localVar, varName);
         }
+    }
+
+    public SObject getObject(String name) {
+        if (localVariables.containsKey(name)) {
+            return localVariables.get(name);
+        }
+        if (parent != null) {
+            return parent.getObject(name);
+        }
+        return null;
+    }
+
+    public Global getGlobalScope() {
+        Scope current = this;
+        while (current.getParent() != null) {
+            current = current.getParent();
+        }
+        if (current instanceof Global) {
+            return (Global) current;
+        }
+        throw new RuntimeException("Global scope not found structure error");
+    }
+
+    public Scope getParent() {
+        return parent;
     }
 
     protected void addVariable(SObject sObject, String varName){
@@ -78,9 +102,6 @@ public abstract class Scope {
         return false;
     }
 
-    protected SObject getObject(String name) {
-        return localVariables.get(name);
-    }
 
     private VarTypes getVarType(String name) {
         if (isObjectExists(name)) {
