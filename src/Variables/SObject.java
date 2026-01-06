@@ -24,17 +24,13 @@ public abstract class SObject {
 
     public void setValue(String value) {
         if(!isValidInput(value)){
-            throw
+            throw new InvalidInput("");
         }
         if(isFinal){
-            throw
+            throw new
         }
         this.value = value;
         this.isInitialized = true;
-    }
-
-    public void updateInitializes(){
-        isInitialized = true;
     }
 
     public VarTypes getVarType(){
@@ -43,5 +39,17 @@ public abstract class SObject {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isFinal() {
+        return isFinal;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
     }
 }

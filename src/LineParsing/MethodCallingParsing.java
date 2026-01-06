@@ -25,14 +25,14 @@ public class MethodCallingParsing {
         return methodParameters;
     }
 
-    private String extractMethodName(String content) throws IllegalArgumentException{
+    private String extractMethodName(String content) throws IllegalArgumentException, IllegalMethodName {
         Pattern p = Pattern.compile("\\s*(" + RegexPatterns.METHOD_NAME + ")\\s*\\(");
         Matcher m = p.matcher(content);
 
         if (m.find()) {
             return m.group(1);
         }
-        throw new IllegalArgumentException("Invalid method declaration: " + content);
+        throw new IllegalMethodName();
     }
 
     private ArrayList<String> extractMethodParameters(String content){

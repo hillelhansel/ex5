@@ -1,6 +1,7 @@
 package Validation;
 
 import CodeParser.Line;
+import CodeParser.RegexPatterns;
 import LineParsing.*;
 import Scopes.Global;
 import Scopes.Method;
@@ -10,6 +11,7 @@ import Variables.SObject;
 import Variables.VarTypes;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ScopeValidation {
     public void validate(Scope scope) throws InvalidValueException {
@@ -30,7 +32,7 @@ public class ScopeValidation {
                     AssignmentDeclarationParsing assignmentDeclarationParsing = new AssignmentDeclarationParsing(line);
                     ArrayList<Var> assignmentVariable = assignmentDeclarationParsing.getParams();
                     for (Var var : assignmentVariable) {
-                        if (doesObjectExists(var.getName())) {
+                        if (scope.doesObjectExists(var.getName())) {
                             throw
                         }
                         SObject object = scope.getObject(var.getName());
@@ -62,12 +64,39 @@ public class ScopeValidation {
         }
     }
 
+    private void addDeclaredVariabels(Line line) {
+
+    }
+
     private void validateSingleCalling(String paramValue, MethodParameter methodParameter, Scope scope) throws Exception{
         VarTypes expectedType = methodParameter.getType();
 
         SObject object = scope.getObject(paramValue);
         if(object != null){
+            if(!object.isInitialized()){
+                throw invalid
+            }
+            if(object.getVarType() != expectedType){
+                throw invalid
+            }
 
         }
+
+        else if(!isLiteralMatchingType(paramValue, expectedType)){
+            throw invalid
+        }
+    }
+
+    private boolean isLiteralMatchingType(String value, VarTypes expectedType) {
+        String regex = "";
+        switch (expectedType) {
+            case SINT: regex = RegexPatterns.INT; break;
+            case SDOUBLE: regex = RegexPatterns.DOUBLE; break;
+            case SSTRING: regex = RegexPatterns.STRING; break;
+            case SCHAR: regex = RegexPatterns.CHAR; break;
+            case SBOOLEAN: regex = RegexPatterns.BOOLEAN; break;
+            default: return false;
+        }
+        return Pattern.matches(regex, value);
     }
 }

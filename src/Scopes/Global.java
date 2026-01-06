@@ -1,6 +1,7 @@
 package Scopes;
 
 import CodeParser.Line;
+import LineParsing.IllegalMethodName;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
@@ -24,26 +25,31 @@ public class Global extends Scope {
         return methods;
     }
 
-    private void firstPass(ArrayList<Line> lines) throws Exception {
+    private void firstPass(ArrayList<Line> lines) throws IllegalCodeException {
         for (int i = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
-            switch (line.getLineType()) {
-                case METHOD_DECLARATION:
-                    MethodDeclarationParsing methodDeclarationParsing = new MethodDeclarationParsing(line);
-                    int methodLength = addMethods(methodDeclarationParsing, i);
-                    i += methodLength - 1;
-                    break;
+            try {
+                switch (line.getLineType()) {
+                    case METHOD_DECLARATION:
+                        MethodDeclarationParsing methodDeclarationParsing = new MethodDeclarationParsing(line);
+                        int methodLength = addMethods(methodDeclarationParsing, i);
+                        i += methodLength - 1;
+                        break;
 
-                case VARIABLE_DECLARATION:
-                    VarDeclarationParsing parsedLine = new VarDeclarationParsing(line);
-                    addVariables(parsedLine);
-                    break;
+                    case VARIABLE_DECLARATION:
+                        VarDeclarationParsing parsedLine = new VarDeclarationParsing(line);
+                        addVariables(parsedLine);
+                        break;
 
-                case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
-                    throw new Exception("Error line " + line.getLineIndex() + ": Illegal code in global scope");
+                    case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
+                        throw new IllegalCodeInGlobalScope();
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+            }
+            catch (IllegalCodeException e) {
+                throw new IllegalCodeException(line.getLineIndex() + ": " + e.getMessage());
             }
         }
     }

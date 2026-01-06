@@ -72,7 +72,7 @@ public abstract class Scope {
         localVariables.put(varName, sObject);
     }
 
-    protected int addIfWhile(IfWhileParsing ifWhileParsing, int index) {
+    public int addIfWhile(IfWhileParsing ifWhileParsing, int index) {
         int methodLength = getBlockLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
         new Block(this, methodLines);
@@ -92,19 +92,19 @@ public abstract class Scope {
         return count;
     }
 
-    protected boolean isObjectExists(String name) {
+    public boolean doesObjectExists(String name) {
         if (localVariables.containsKey(name)) {
             return true;
         }
         else{
-            parent.isObjectExists(name);
+            parent.doesObjectExists(name);
         }
         return false;
     }
 
 
     private VarTypes getVarType(String name) {
-        if (isObjectExists(name)) {
+        if (doesObjectExists(name)) {
             SObject object = getObject(name);
             if (object != null){
                 return object.getVarType();
