@@ -51,7 +51,7 @@ public class VarDeclarationParsing {
         if (!headerMatcher.find()) return vars;
 
         String body = content.substring(headerMatcher.end());
-        Pattern p = Pattern.compile("(" + RegexPatterns.VAR_NAME + ")(?:\\s*=\\s*([^,;]+))?");
+        Pattern p = Pattern.compile(RegexPatterns.VAR_NAME + "(?:\\s*=\\s*([^,;]+))?");
         Matcher m = p.matcher(body);
 
         while (m.find()) {

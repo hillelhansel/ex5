@@ -1,13 +1,12 @@
 package Scopes;
 
 import CodeParser.Line;
-import LineParsing.IllegalMethodName;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
 import Validation.ScopeValidation;
-import Variables.InvalidValueException;
-import main.IllegalCodeException;
+import Variables.VariableException;
+import main.IllegalCodeException; // Import חשוב
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,19 +53,20 @@ public class Global extends Scope {
         }
     }
 
-    private void secondPass() throws Exception {
+    private void secondPass() throws IllegalCodeException {
         ScopeValidation validation = new ScopeValidation();
-        methods.forEach((name, method) -> {
+
+        for (Method method : methods.values()) {
             try {
                 validation.validate(method);
             }
-            catch (InvalidValueException e) {
-                throw new IllegalCodeException(e);
+            catch (IllegalCodeException e) {
+                throw e;
             }
-        });
+        }
     }
 
-    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws InvalidValueException {
+    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws VariableException {
         String methodName = methodDeclarationParsing.getMethodName();
         int methodLength = getBlockLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
@@ -74,7 +74,4 @@ public class Global extends Scope {
         methods.put(methodName, new Method(this, methodLines, methodParameters));
         return methodLength;
     }
-
-
-
 }

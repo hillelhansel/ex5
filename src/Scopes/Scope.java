@@ -4,9 +4,8 @@ import CodeParser.Line;
 import LineParsing.IfWhileParsing;
 import LineParsing.Var;
 import LineParsing.VarDeclarationParsing;
-import Variables.InvalidValueException;
+import Variables.VariableException;
 import Variables.SObject;
-import Variables.VarFactory;
 import Variables.VarTypes;
 
 import java.util.ArrayList;
@@ -16,12 +15,10 @@ public abstract class Scope {
     protected Scope parent;
     protected final ArrayList<Line> lines;
     protected final HashMap<String, SObject> localVariables;
-    protected final VarFactory varFactory;
 
     public Scope(Scope parent, ArrayList<Line> lines) {
         this.parent = parent;
         this.lines = lines;
-        this.varFactory = new VarFactory();
         this.localVariables = new HashMap<>();
     }
 
@@ -29,13 +26,13 @@ public abstract class Scope {
         return lines;
     }
 
-    public void addVariables(VarDeclarationParsing parsedLine) throws InvalidValueException {
+    public void addVariables(VarDeclarationParsing parsedLine) throws VariableException, ScopeException {
         boolean isFinal = parsedLine.isFinal();
         VarTypes type = parsedLine.getType();
         for(Var var:parsedLine.getVariables()){
             String varName = var.getName();
             String varValue = var.getValue();
-            SObject localVar = varFactory.getObject(varName, isFinal, type, varValue);
+            SObject localVar = new SObject(varName, isFinal, type, varValue);
             addVariable(localVar, varName);
         }
     }
@@ -50,7 +47,7 @@ public abstract class Scope {
         return null;
     }
 
-    public Global getGlobalScope() {
+    public Global getGlobalScope() throws ScopeException {
         Scope current = this;
         while (current.getParent() != null) {
             current = current.getParent();
@@ -58,16 +55,16 @@ public abstract class Scope {
         if (current instanceof Global) {
             return (Global) current;
         }
-        throw new RuntimeException("Global scope not found structure error");
+        throw new ScopeException("Global scope not found structure error");
     }
 
     public Scope getParent() {
         return parent;
     }
 
-    protected void addVariable(SObject sObject, String varName){
+    protected void addVariable(SObject sObject, String varName) throws ScopeException {
         if(this.localVariables.containsKey(varName)){
-            throw new DuplicateVariableException();
+            throw new ScopeException("variable already exist");
         }
         localVariables.put(varName, sObject);
     }
@@ -84,10 +81,16 @@ public abstract class Scope {
         int count = 0;
         for (int i = startIndex; i < lines.size(); i++) {
             String content = lines.get(i).getContent();
-            if (content.contains("{")) openBrackets++;
-            if (content.contains("}")) openBrackets--;
+            if (content.contains("{")){
+                openBrackets++;
+            }
+            if (content.contains("}")){
+                openBrackets--;
+            }
             count++;
-            if (openBrackets == 0) return count;
+            if (openBrackets == 0){
+                return count;
+            }
         }
         return count;
     }

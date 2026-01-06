@@ -22,7 +22,7 @@ public class AssignmentDeclarationParsing {
     private ArrayList<Var> extractAssignedVars(String content){
         ArrayList<Var> params = new ArrayList<>();
 
-        Pattern p = Pattern.compile("\\s*" + "(" + RegexPatterns.VAR_NAME + ")\\s*=\\s*" + "(" + RegexPatterns.ARGUMENT + ")");
+        Pattern p = Pattern.compile("\\s*" + RegexPatterns.VAR_NAME + "\\s*=\\s*" + RegexPatterns.ARGUMENT);
         Matcher m = p.matcher(content);
         while (m.find()) {
             String name = m.group(1);

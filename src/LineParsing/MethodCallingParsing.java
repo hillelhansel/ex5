@@ -11,7 +11,7 @@ public class MethodCallingParsing {
     private final String methodName;
     private final ArrayList<String> methodParameters;
 
-    public MethodCallingParsing(Line line) {
+    public MethodCallingParsing(Line line) throws LineParsingException {
         String content = line.getContent();
         this.methodName = extractMethodName(content);
         this.methodParameters = extractMethodParameters(content);
@@ -25,14 +25,14 @@ public class MethodCallingParsing {
         return methodParameters;
     }
 
-    private String extractMethodName(String content) throws IllegalArgumentException, IllegalMethodName {
-        Pattern p = Pattern.compile("\\s*(" + RegexPatterns.METHOD_NAME + ")\\s*\\(");
+    private String extractMethodName(String content) throws IllegalArgumentException, LineParsingException {
+        Pattern p = Pattern.compile("\\s*" + RegexPatterns.METHOD_NAME + "\\s*\\(");
         Matcher m = p.matcher(content);
 
         if (m.find()) {
             return m.group(1);
         }
-        throw new IllegalMethodName();
+        throw new LineParsingException("illegal name");
     }
 
     private ArrayList<String> extractMethodParameters(String content){
@@ -43,7 +43,7 @@ public class MethodCallingParsing {
             return params;
         }
 
-        Pattern p = Pattern.compile("\\s*" + "(" + RegexPatterns.ARGUMENT + ")");
+        Pattern p = Pattern.compile("\\s*" + RegexPatterns.ARGUMENT);
         Matcher m = p.matcher(paramsContent);
         while (m.find()) {
             params.add(m.group(1));

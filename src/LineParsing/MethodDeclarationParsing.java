@@ -12,7 +12,7 @@ public class MethodDeclarationParsing {
     public final String methodName;
     public final ArrayList<MethodParameter> parameters;
 
-    public MethodDeclarationParsing(Line line) {
+    public MethodDeclarationParsing(Line line) throws LineParsingException {
         String content = line.getContent();
         this.methodName = extractMethodName(content);
         this.parameters = extractParameters(content);
@@ -26,14 +26,14 @@ public class MethodDeclarationParsing {
         return parameters;
     }
 
-    private String extractMethodName(String content) throws IllegalMethodName {
-        Pattern p = Pattern.compile("void\\s+(" + RegexPatterns.METHOD_NAME + ")\\s*\\(");
+    private String extractMethodName(String content) throws LineParsingException {
+        Pattern p = Pattern.compile("void\\s+" + RegexPatterns.METHOD_NAME + "\\s*\\(");
         Matcher m = p.matcher(content);
 
         if (m.find()) {
             return m.group(1);
         }
-        throw new IllegalMethodName();
+        throw new LineParsingException("illegal name");
     }
 
     private ArrayList<MethodParameter> extractParameters(String content) {

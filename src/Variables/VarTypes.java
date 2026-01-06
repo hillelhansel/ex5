@@ -14,7 +14,7 @@ public enum VarTypes {
             case "String": return VarTypes.SSTRING;
             case "boolean": return VarTypes.SBOOLEAN;
             case "char": return VarTypes.SCHAR;
-            default: throw new IllegalArgumentException("Unknown type: " + typeStr);
+            default: throw new VariableException("Unknown type: " + typeStr);
         }
     }
 }

@@ -23,7 +23,7 @@ public class IfWhileParsing {
         ArrayList<String> params = new ArrayList<>();
         String body = extractContentInsideBrackets(content);
 
-        Pattern p = Pattern.compile("\\s*" + "(" + RegexPatterns.ARGUMENT + ")");
+        Pattern p = Pattern.compile("\\s*" + RegexPatterns.ARGUMENT);
         Matcher m = p.matcher(body);
         while (m.find()) {
             params.add(m.group(1));

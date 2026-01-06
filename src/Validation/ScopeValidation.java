@@ -6,7 +6,8 @@ import LineParsing.*;
 import Scopes.Global;
 import Scopes.Method;
 import Scopes.Scope;
-import Variables.InvalidValueException;
+import Scopes.ScopeException;
+import Variables.VariableException;
 import Variables.SObject;
 import Variables.VarTypes;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class ScopeValidation {
-    public void validate(Scope scope) throws InvalidValueException {
+    public void validate(Scope scope) throws VariableException, ScopeException, LineParsingException {
         ArrayList<Line> scopeLines = scope.getLines();
         for (int i = 1; i < scopeLines.size(); i++) {
             Line line = scopeLines.get(i);
