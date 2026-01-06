@@ -6,11 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SBoolean extends SObject {
-    public SBoolean(String name, boolean isFinal, boolean isInitialized, String value) throws InvalidValueException{
-        super(name, isFinal, isInitialized, VarTypes.SBOOLEAN);
-        if (isInitialized && !isValidInput(value)) {
-            throw new InvalidValueException(value, type);
-        }
+    public SBoolean(String name, boolean isFinal, String value) throws InvalidValueException{
+        super(name, isFinal, VarTypes.SBOOLEAN, value);
     }
 
     @Override

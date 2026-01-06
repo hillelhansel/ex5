@@ -10,19 +10,7 @@ import java.util.regex.Pattern;
 
 public class MethodDeclarationParsing {
     public final String methodName;
-    public final ArrayList<MethodParam> parameters;
-
-    public static class MethodParam {
-        public final boolean isFinal;
-        public final VarTypes type;
-        public final String name;
-
-        public MethodParam(boolean isFinal, VarTypes type, String name) {
-            this.isFinal = isFinal;
-            this.type = type;
-            this.name = name;
-        }
-    }
+    public final ArrayList<MethodParameter> parameters;
 
     public MethodDeclarationParsing(Line line) {
         String content = line.getContent();
@@ -34,7 +22,7 @@ public class MethodDeclarationParsing {
         return methodName;
     }
 
-    public ArrayList<MethodParam> getParameters() {
+    public ArrayList<MethodParameter> getParameters() {
         return parameters;
     }
 
@@ -48,8 +36,8 @@ public class MethodDeclarationParsing {
         throw new IllegalArgumentException("Invalid method declaration: " + content);
     }
 
-    private ArrayList<MethodParam> extractParameters(String content) {
-        ArrayList<MethodParam> params = new ArrayList<>();
+    private ArrayList<MethodParameter> extractParameters(String content) {
+        ArrayList<MethodParameter> params = new ArrayList<>();
 
         String paramsContent = extractContentInsideBrackets(content);
         if (paramsContent.isEmpty()) {
@@ -63,7 +51,7 @@ public class MethodDeclarationParsing {
             boolean isFinal = (m.group(1) != null);
             VarTypes type = VarTypes.convertStringToEnum(m.group(2));
             String name = m.group(3);
-            params.add(new MethodParam(isFinal, type, name));
+            params.add(new MethodParameter(isFinal, type, name));
         }
         return params;
     }

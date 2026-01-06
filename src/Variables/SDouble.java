@@ -6,11 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SDouble extends SObject {
-    public SDouble(String name, boolean isFinal, boolean isInitialized, String value) throws InvalidValueException {
-        super(name, isFinal, isInitialized, VarTypes.SDOUBLE);
-        if (isInitialized && !isValidInput(value)) {
-            throw new InvalidValueException(value, type);
-        }    }
+    public SDouble(String name, boolean isFinal, String value) throws InvalidValueException {
+        super(name, isFinal, VarTypes.SDOUBLE, value);
+    }
 
     @Override
     public boolean isValidInput(String input) {

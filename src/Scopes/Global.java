@@ -2,23 +2,26 @@ package Scopes;
 
 import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
-import LineParsing.Var;
+import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
-import Variables.SObject;
-import Variables.VarFactory;
-import Variables.VarTypes;
+import Validation.ScopeValidation;
+import Variables.InvalidValueException;
+import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Global extends Scope {
-    HashMap<String, Method> methods = new HashMap<>();
-    private final VarFactory varFactory;
+    private final HashMap<String, Method> methods = new HashMap<>();
 
     public Global(Scope parent, ArrayList<Line> lines) throws Exception {
         super(parent, lines);
-        this.varFactory = new VarFactory();
         firstPass(lines);
+        secondPass();
+    }
+
+    public HashMap<String, Method> getMethods() {
+        return methods;
     }
 
     private void firstPass(ArrayList<Line> lines) throws Exception {
@@ -27,24 +30,13 @@ public class Global extends Scope {
             switch (line.getLineType()) {
                 case METHOD_DECLARATION:
                     MethodDeclarationParsing methodDeclarationParsing = new MethodDeclarationParsing(line);
-                    String methodName = methodDeclarationParsing.getMethodName();
-                    int methodLength = getBlockLength(lines, i);
-                    ArrayList<Line> methodLines = new ArrayList<>(lines.subList(i, i + methodLength));
-                    methods.put(methodName, new Method(this, methodLines));
+                    int methodLength = addMethods(methodDeclarationParsing, i);
                     i += methodLength - 1;
                     break;
 
                 case VARIABLE_DECLARATION:
                     VarDeclarationParsing parsedLine = new VarDeclarationParsing(line);
-                    boolean isFinal = parsedLine.isFinal();
-                    VarTypes type = parsedLine.getType();
-                    for(Var var:  parsedLine.getVariables()) {
-                        String varName = var.getName();
-                        String varValue = var.getValue();
-                        boolean isInitialized = (varValue != null);
-                        SObject localVar = varFactory.getObject(varName, isFinal, isInitialized, type, varValue);
-                        addVariabele(localVar, varName);
-                    }
+                    addVariables(parsedLine);
                     break;
 
                 case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
@@ -56,17 +48,27 @@ public class Global extends Scope {
         }
     }
 
-    private int getBlockLength(ArrayList<Line> lines, int startIndex) {
-        int openBrackets = 0;
-        int count = 0;
-        for (int i = startIndex; i < lines.size(); i++) {
-            String content = lines.get(i).getContent();
-            if (content.contains("{")) openBrackets++;
-            if (content.contains("}")) openBrackets--;
-            count++;
-            if (openBrackets == 0) return count;
-        }
-        return count;
+    private void secondPass() throws Exception {
+        ScopeValidation validation = new ScopeValidation();
+        methods.forEach((name, method) -> {
+            try {
+                validation.validate(method);
+            }
+            catch (InvalidValueException e) {
+                throw new IllegalCodeException(e);
+            }
+        });
     }
+
+    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws InvalidValueException {
+        String methodName = methodDeclarationParsing.getMethodName();
+        int methodLength = getBlockLength(lines, index);
+        ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
+        ArrayList<MethodParameter> methodParameters = methodDeclarationParsing.getParameters();
+        methods.put(methodName, new Method(this, methodLines, methodParameters));
+        return methodLength;
+    }
+
+
 
 }
