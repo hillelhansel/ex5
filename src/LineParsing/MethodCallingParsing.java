@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MethodCallingParsing {
+public class MethodCallingParsing extends LineParsing {
     private final String methodName;
     private final ArrayList<String> methodParameters;
 
     public MethodCallingParsing(Line line) throws LineParsingException {
-        String content = line.getContent();
+        super(line);
         this.methodName = extractMethodName(content);
         this.methodParameters = extractMethodParameters(content);
     }
@@ -49,15 +49,5 @@ public class MethodCallingParsing {
             params.add(m.group(1));
         }
         return params;
-    }
-
-    private String extractContentInsideBrackets(String content) {
-        int start = content.indexOf('(');
-        int end = content.lastIndexOf(')');
-
-        if (start != -1 && end != -1 && end > start) {
-            return content.substring(start + 1, end).trim();
-        }
-        return "";
     }
 }

@@ -4,7 +4,6 @@ import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
-import Validation.ScopeValidation;
 import Variables.VariableException;
 import main.IllegalCodeException; // Import חשוב
 
@@ -66,7 +65,7 @@ public class Global extends Scope {
         }
     }
 
-    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws VariableException {
+    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
         String methodName = methodDeclarationParsing.getMethodName();
         int methodLength = getBlockLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));

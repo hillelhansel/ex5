@@ -1,20 +1,34 @@
 package Variables;
 
-public enum VarTypes {
-    SSTRING,
-    SINT,
-    SCHAR,
-    SDOUBLE,
-    SBOOLEAN;
+import java.util.HashMap;
+import java.util.Map;
 
-    public static VarTypes convertStringToEnum(String typeStr) {
-        switch (typeStr) {
-            case "int": return VarTypes.SINT;
-            case "double": return VarTypes.SDOUBLE;
-            case "String": return VarTypes.SSTRING;
-            case "boolean": return VarTypes.SBOOLEAN;
-            case "char": return VarTypes.SCHAR;
-            default: throw new VariableException("Unknown type: " + typeStr);
+public enum VarTypes {
+    // מגדירים את הקבועים עם המחרוזת המתאימה להם
+    SINT("int"),
+    SDOUBLE("double"),
+    SSTRING("String"),
+    SBOOLEAN("boolean"),
+    SCHAR("char");
+
+    private final String typeName;
+
+    VarTypes(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public static VarTypes fromString(String typeStr) throws VariableException {
+        for (VarTypes type : VarTypes.values()) {
+            if (type.typeName.equals(typeStr)) {
+                return type; // מצאנו!
+            }
         }
+        throw new VariableException("Unknown type: " + typeStr);
+    }
+
+    // אופציונלי: אם תרצה להדפיס את השם היפה בחזרה
+    @Override
+    public String toString() {
+        return this.typeName;
     }
 }

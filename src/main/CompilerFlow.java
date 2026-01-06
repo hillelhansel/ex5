@@ -1,10 +1,9 @@
 package main;
 
-import CodeParser.CodeClassifier;
 import CodeParser.CodeCleaner;
 import CodeParser.Line;
+import CodeParser.SyntaxValidator;
 import Scopes.Global;
-import Validation.SyntaxValidation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,17 +11,13 @@ import java.util.ArrayList;
 
 public class CompilerFlow {
     private final CodeCleaner cleaner = new CodeCleaner();
-    private final CodeClassifier classifier = new CodeClassifier();
-    private final SyntaxValidation syntaxValidator = new SyntaxValidation();
+    private final SyntaxValidator syntaxValidator = new SyntaxValidator();
 
     public void compile(String filePath) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         ArrayList<Line> lines = cleaner.cleanCode(reader);
 
-        classifier.classifyCode(lines);
-
-        syntaxValidator.validateSyntax(lines);
-
+        syntaxValidator.validateCode(lines);
         Global global = new Global(null, lines);
 
     }

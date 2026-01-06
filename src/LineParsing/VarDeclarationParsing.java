@@ -3,18 +3,19 @@ package LineParsing;
 import CodeParser.Line;
 import CodeParser.RegexPatterns;
 import Variables.VarTypes;
+import Variables.VariableException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class VarDeclarationParsing {
+public class VarDeclarationParsing extends LineParsing {
     private final boolean isFinal;
     private final VarTypes type;
     private final ArrayList<Var> variables;
 
     public VarDeclarationParsing(Line line) {
-        String content = line.getContent();
+        super(line);
         this.isFinal = parseIsFinal(content);
         this.type = extractVarType(content);
         this.variables = extractVariables(content);
@@ -36,12 +37,12 @@ public class VarDeclarationParsing {
         return content.trim().startsWith("final");
     }
 
-    private VarTypes extractVarType(String content) throws IllegalArgumentException{
+    private VarTypes extractVarType(String content) throws VariableException, LineParsingException {
         Matcher m = Pattern.compile(RegexPatterns.FINAL + "(" + RegexPatterns.VAR_TYPE + ")").matcher(content);
         if (m.find()) {
-            return VarTypes.convertStringToEnum(m.group(2));
+            return VarTypes.fromString(m.group(2));
         }
-        throw new IllegalArgumentException("Cannot identify variable type in: " + content);
+        throw new LineParsingException("Cannot identify variable type in: " + content);
     }
 
     private ArrayList<Var> extractVariables(String content) {

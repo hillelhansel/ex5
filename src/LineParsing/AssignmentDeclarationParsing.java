@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AssignmentDeclarationParsing {
+public class AssignmentDeclarationParsing extends LineParsing {
     private final ArrayList<Var> assignedVars;
 
     public AssignmentDeclarationParsing(Line line) {
-        String content = line.getContent();
+        super(line);
         this.assignedVars = extractAssignedVars(content);
     }
 

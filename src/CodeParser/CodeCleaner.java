@@ -1,7 +1,5 @@
 package CodeParser;
 
-import Validation.SyntaxException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class CodeCleaner {
             lineIndex++;
             int commentIndex = line.indexOf("//");
             if(commentIndex > 0){
-                throw new SyntaxException(lineIndex);
+                throw new SyntaxException(lineIndex + "invalid comment syntax");
             }
 
             line = line.trim();
@@ -30,7 +28,7 @@ public class CodeCleaner {
 
             Matcher matcher = pattern.matcher(line);
             if(matcher.lookingAt()){
-                throw new SyntaxException(lineIndex);
+                throw new SyntaxException(lineIndex + "invalid comment syntax");
             }
             Line newLine = new Line(line, lineIndex, null);
             cleanedCode.add(newLine);

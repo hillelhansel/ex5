@@ -1,12 +1,8 @@
-package Validation;
+package Scopes;
 
 import CodeParser.Line;
 import CodeParser.RegexPatterns;
 import LineParsing.*;
-import Scopes.Global;
-import Scopes.Method;
-import Scopes.Scope;
-import Scopes.ScopeException;
 import Variables.VariableException;
 import Variables.SObject;
 import Variables.VarTypes;
