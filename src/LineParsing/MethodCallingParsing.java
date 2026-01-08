@@ -1,6 +1,7 @@
 package LineParsing;
 
 import CodeParser.Line;
+import main.IllegalCodeException;
 
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ public class MethodCallingParsing extends LineParsing {
     private String methodName;
     private ArrayList<String> parameters;
 
-    public MethodCallingParsing(Line line) {
+    public MethodCallingParsing(Line line) throws IllegalCodeException {
         super(line);
         parse();
     }

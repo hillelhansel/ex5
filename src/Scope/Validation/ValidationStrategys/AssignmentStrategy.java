@@ -1,7 +1,7 @@
 package Scope.Validation.ValidationStrategys;
 
 import CodeParser.Line;
-import LineParsing.AssignmentDeclarationParsing;
+import LineParsing.AssignmentParsing;
 import LineParsing.Var;
 import Scope.Scope;
 import Scope.ScopeException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class AssignmentStrategy extends BaseStrategy {
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-        AssignmentDeclarationParsing parser = new AssignmentDeclarationParsing(line);
+        AssignmentParsing parser = new AssignmentParsing(line);
         ArrayList<Var> assignmentVariable = parser.getParams();
 
         for (Var var : assignmentVariable) {

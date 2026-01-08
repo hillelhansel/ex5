@@ -1,22 +1,18 @@
 package LineParsing;
 
 import CodeParser.Line;
-import CodeParser.RegexPatterns;
 import Variables.VarTypes;
-import Variables.VariableException;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MethodDeclarationParsing extends LineParsing {
-    public final String methodName;
-    public ArrayList<MethodParameter> parameters;
+    private String methodName;
+    private ArrayList<MethodParameter> parameters;
 
-    public MethodDeclarationParsing(Line line) throws LineParsingException {
+    public MethodDeclarationParsing(Line line) throws IllegalCodeException {
         super(line);
-        this.methodName = extractNameBeforeBrackets(content);
     }
 
     public String getMethodName() {
@@ -29,19 +25,21 @@ public class MethodDeclarationParsing extends LineParsing {
 
     @Override
     public void parse() throws IllegalCodeException {
+        this.methodName = extractNameBeforeBrackets(content);
         String paramsContent = extractContentInsideBrackets(content);
-        if (paramsContent.isEmpty()) {
-            return;
-        }
 
-        Pattern p = Pattern.compile(RegexPatterns.FINAL + "(" + RegexPatterns.VAR_TYPE + ")" +
-                        "\\s+" + "(" + RegexPatterns.VAR_NAME + ")");
-        Matcher m = p.matcher(paramsContent);
-        while (m.find()) {
-            boolean isFinal = (m.group(1) != null);
-            VarTypes type = VarTypes.fromString(m.group(2));
-            String name = m.group(3);
-            this.parameters.add(new MethodParameter(isFinal, type, name));
+        this.parameters = new ArrayList<>();
+        ArrayList<String> paramStrings = splitByComma(paramsContent);
+
+        for (String paramStr : paramStrings) {
+            Matcher m = getHeaderMatcher(paramStr);
+
+            boolean pIsFinal = (m.group(1) != null);
+            VarTypes pType = VarTypes.fromString(m.group(2));
+
+            String pName = paramStr.substring(m.end()).trim();
+
+            this.parameters.add(new MethodParameter(pIsFinal, pType, pName));
         }
     }
 }

@@ -8,9 +8,11 @@ public class Var {
         this.name = name;
         this.value = assignment;
     }
+
     public String getName() {
         return name;
     }
+
     public String getValue() {
         return value;
     }

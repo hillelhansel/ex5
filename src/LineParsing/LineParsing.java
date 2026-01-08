@@ -1,11 +1,13 @@
 package LineParsing;
 
 import CodeParser.Line;
-import Variables.VariableException;
+import CodeParser.RegexPatterns;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class LineParsing {
@@ -45,11 +47,25 @@ public abstract class LineParsing {
         return "";
     }
 
-    protected Var parseVarPart(String rawVar) {
-        String[] parts = rawVar.split("=");
+    protected Var parseVarPart(String var) {
+        String[] parts = var.split("=");
         String name = parts[0].trim();
-        String value = (parts.length > 1) ? parts[1].trim() : null;
+
+        String value = null;
+        if (parts.length > 1) {
+            value = parts[1].trim();
+        }
 
         return new Var(name, value);
+    }
+
+    protected Matcher getHeaderMatcher(String text) throws LineParsingException {
+        Pattern p = Pattern.compile("^\\s*" + RegexPatterns.FINAL + "(" + RegexPatterns.VAR_TYPE + ")");
+        Matcher m = p.matcher(text);
+
+        if (!m.find()) {
+            throw new LineParsingException("Cannot identify variable type in: " + text);
+        }
+        return m;
     }
 }

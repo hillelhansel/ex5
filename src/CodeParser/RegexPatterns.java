@@ -12,8 +12,6 @@ public class RegexPatterns {
     public static final String ARGUMENT = "(" + INT + "|" + DOUBLE + "|" + STRING + "|" + CHAR + "|" +
             BOOLEAN + "|" + VAR_NAME + ")";
 
-    public static final String SPACE = "\\s*";
     public static final String FINAL = "(final\\s+)?";
-    public static final String ANYTHING = ".*";
     public static final String LOGICAL_OPS = "\\s*(\\|\\||&&)\\s*";
 }
