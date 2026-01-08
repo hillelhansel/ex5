@@ -1,10 +1,25 @@
 package main;
 
+import CodeParser.CodeCleaner;
+import CodeParser.Line;
+import CodeParser.SyntaxException;
+import CodeParser.SyntaxValidator;
+import Scopes.Global;
+
 import java.io.*;
+import java.util.ArrayList;
 
 public class Sjavac {
-    public static void main(String[] args) {
+    private static final CodeCleaner cleaner = new CodeCleaner();
+    private static final SyntaxValidator syntaxValidator = new SyntaxValidator();
 
+    private void compile(BufferedReader reader) throws SyntaxException, IOException {
+        ArrayList<Line> lines = cleaner.cleanCode(reader);
+        syntaxValidator.validateCode(lines);
+        Global global = new Global(null, lines);
+    }
+
+    public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println(2);
             System.err.println("Error: Invalid arguments count. Usage: java SJavac <file_path>");
@@ -17,8 +32,8 @@ public class Sjavac {
             System.err.println("Error: File must end with .sjava");
             return;
         }
-        try {
-            new CompilerFlow().compile(args[0]);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
             System.out.println(0);
         }
         catch (IOException e) {

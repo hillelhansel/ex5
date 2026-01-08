@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Global extends Scope {
     private final HashMap<String, Method> methods = new HashMap<>();
 
-    public Global(Scope parent, ArrayList<Line> lines) throws Exception {
+    public Global(Scope parent, ArrayList<Line> lines) throws IllegalCodeException {
         super(parent, lines);
         firstPass(lines);
         secondPass();

@@ -1,8 +1,6 @@
 package Variables;
 
 import CodeParser.RegexPatterns;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SObject {
@@ -15,34 +13,44 @@ public class SObject {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;
-        if (!isValidInput(value)) {
-            throw new VariableException("invalid input");
+
+        if (value != null) {
+            if (!isValidInput(value)) {
+                throw new VariableException("Invalid input value for type " + type);
+            }
+            this.isInitialized = true;
         }
-        if(value == null) {
+        else {
+            if (isFinal) {
+                throw new VariableException("Final variable '" + name + "' must be initialized");
+            }
             this.isInitialized = false;
         }
     }
 
-    public boolean isValidInput(String value) throws VariableException {
+    public boolean isValidInput(String value) {
+        if (value == null){
+            return false;
+        }
+
         String regex;
         switch(type){
-            case SCHAR -> regex = RegexPatterns.CHAR;
-            case SINT -> regex = RegexPatterns.INT;
-            case SBOOLEAN ->  regex = RegexPatterns.BOOLEAN;
-            case SSTRING -> regex = RegexPatterns.STRING;
-            case SDOUBLE ->  regex = RegexPatterns.DOUBLE;
-            default -> throw new VariableException("Unknown type");
+            case SCHAR: regex = RegexPatterns.CHAR; break;
+            case SINT: regex = RegexPatterns.INT; break;
+            case SBOOLEAN: regex = RegexPatterns.BOOLEAN; break;
+            case SSTRING: regex = RegexPatterns.STRING; break;
+            case SDOUBLE: regex = RegexPatterns.DOUBLE; break;
+            default: return false;
         }
-        Matcher matcher = Pattern.compile(regex).matcher(value);
-        return matcher.matches();
+        return Pattern.matches(regex, value);
     }
 
     public void setValue(String value) throws VariableException {
-        if(!isValidInput(value)){
-            throw new VariableException("invalid input");
+        if (isFinal) {
+            throw new VariableException("Cannot assign a value to final variable");
         }
-        if(isFinal){
-            throw new VariableException("cannot set final value");
+        if (!isValidInput(value)) {
+            throw new VariableException("Invalid input value: " + value);
         }
         this.isInitialized = true;
     }
@@ -61,5 +69,9 @@ public class SObject {
 
     public boolean isInitialized() {
         return isInitialized;
+    }
+
+    public void setIsInitialized(Boolean initialized) {
+        isInitialized = initialized;
     }
 }

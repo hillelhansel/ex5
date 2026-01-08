@@ -3,7 +3,6 @@ package Scopes;
 import CodeParser.Line;
 import LineParsing.MethodParameter;
 import Variables.SObject;
-import Variables.VariableException;
 import Variables.VarTypes;
 import main.IllegalCodeException;
 
