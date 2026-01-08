@@ -1,4 +1,4 @@
-package Scopes;
+package Scope;
 
 import CodeParser.Line;
 

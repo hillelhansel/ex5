@@ -1,10 +1,10 @@
-package Scopes;
+package Scope;
 
 import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
-import Validation.ScopeValidator;
+import Scope.Validation.ScopeValidator;
 import main.IllegalCodeException; // Import חשוב
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class Global extends Scope {
                         break;
 
                     case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
-                        throw new IllegalCodeInGlobalScope();
+                        throw new ScopeException(line.getLineIndex() + ": illegal type in global scope");
 
                     default:
                         break;
@@ -56,21 +56,19 @@ public class Global extends Scope {
         ScopeValidator validation = new ScopeValidator();
 
         for (Method method : methods.values()) {
-            try {
-                validation.validate(method);
-            }
-            catch (IllegalCodeException e) {
-                throw e;
-            }
+            validation.validate(method);
         }
     }
 
     private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
         String methodName = methodDeclarationParsing.getMethodName();
         int methodLength = scopeLength(lines, index);
+
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
         ArrayList<MethodParameter> methodParameters = methodDeclarationParsing.getParameters();
+
         methods.put(methodName, new Method(this, methodLines, methodParameters));
+
         return methodLength;
     }
 }

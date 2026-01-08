@@ -1,4 +1,4 @@
-package Scopes;
+package Scope;
 
 import CodeParser.Line;
 import LineParsing.Var;
@@ -28,10 +28,10 @@ public abstract class Scope {
     public void addVariables(VarDeclarationParsing parsedLine) throws VariableException, ScopeException {
         boolean isFinal = parsedLine.isFinal();
         VarTypes type = parsedLine.getType();
+
         for(Var var:parsedLine.getVariables()){
             String varName = var.getName();
-            String varValue = var.getValue();
-            SObject localVar = new SObject(varName, isFinal, type, varValue);
+            SObject localVar = new SObject(varName, isFinal, type, var.getValue());
             addVariable(localVar, varName);
         }
     }
@@ -51,6 +51,7 @@ public abstract class Scope {
         while (current.getParent() != null) {
             current = current.getParent();
         }
+        //todo
         if (current instanceof Global) {
             return (Global) current;
         }
@@ -68,14 +69,15 @@ public abstract class Scope {
         localVariables.put(varName, sObject);
     }
 
-    public int addIfWhile(int index) {
+    public Block addIfWhile(int index) throws ScopeException {
         int blockLength = scopeLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + blockLength));
-        new Block(this, methodLines);
-        return blockLength;
+        return new Block(this, methodLines);
     }
 
-    protected int scopeLength(ArrayList<Line> lines, int startIndex) {
+    public void validateScopeEnd() throws ScopeException { }
+
+    protected int scopeLength(ArrayList<Line> lines, int startIndex) throws ScopeException {
         int openBrackets = 0;
         int count = 0;
         for (int i = startIndex; i < lines.size(); i++) {
@@ -90,6 +92,9 @@ public abstract class Scope {
             if (openBrackets == 0){
                 return count;
             }
+        }
+        if(openBrackets != 0){
+            throw new ScopeException(": Missing closing bracket");
         }
         return count;
     }

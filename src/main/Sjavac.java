@@ -2,9 +2,8 @@ package main;
 
 import CodeParser.CodeCleaner;
 import CodeParser.Line;
-import CodeParser.SyntaxException;
 import CodeParser.SyntaxValidator;
-import Scopes.Global;
+import Scope.Global;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class Sjavac {
     private static final CodeCleaner cleaner = new CodeCleaner();
     private static final SyntaxValidator syntaxValidator = new SyntaxValidator();
 
-    private void compile(BufferedReader reader) throws SyntaxException, IOException {
+    private void compile(BufferedReader reader) throws IllegalCodeException, IOException {
         ArrayList<Line> lines = cleaner.cleanCode(reader);
         syntaxValidator.validateCode(lines);
         Global global = new Global(null, lines);
@@ -34,6 +33,7 @@ public class Sjavac {
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+            compile(reader);
             System.out.println(0);
         }
         catch (IOException e) {

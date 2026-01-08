@@ -1,7 +1,7 @@
-package Validation;
+package Scope.Validation;
 
 import CodeParser.Line;
-import Scopes.Scope;
+import Scope.Scope;
 import main.IllegalCodeException;
 
 public interface ValidationStrategy{

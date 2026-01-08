@@ -1,13 +1,12 @@
-package Validation;
+package Scope.Validation;
 
 import CodeParser.Line;
 import CodeParser.LineType;
-import LineParsing.*;
-import Scopes.Scope;
-import Validation.Strategys.AssignmentStrategy;
-import Validation.Strategys.IfWhileStrategy;
-import Validation.Strategys.MethodCallStrategy;
-import Validation.Strategys.VarDeclarationStrategy;
+import Scope.Scope;
+import Scope.Validation.ValidationStrategys.AssignmentStrategy;
+import Scope.Validation.ValidationStrategys.IfWhileStrategy;
+import Scope.Validation.ValidationStrategys.MethodCallStrategy;
+import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -39,5 +38,6 @@ public class ScopeValidator {
                 }
             }
         }
+        scope.validateScopeEnd();
     }
 }

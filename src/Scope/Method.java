@@ -1,6 +1,7 @@
-package Scopes;
+package Scope;
 
 import CodeParser.Line;
+import CodeParser.LineType;
 import LineParsing.MethodParameter;
 import Variables.SObject;
 import Variables.VarTypes;
@@ -13,6 +14,7 @@ public class Method extends Scope{
     public Method(Scope parent, ArrayList<Line> lines, ArrayList<MethodParameter> methodParameters) throws IllegalCodeException {
         super(parent, lines);
         this.methodParameters = methodParameters;
+
         for (MethodParameter methodParameter : methodParameters) {
             String name = methodParameter.getName();
             VarTypes type = methodParameter.getType();
@@ -23,5 +25,15 @@ public class Method extends Scope{
 
     public ArrayList<MethodParameter> getMethodParams() {
         return methodParameters;
+    }
+
+    @Override
+    public void validateScopeEnd() throws ScopeException {
+        if (lines.isEmpty()) throw new ScopeException("Method cannot be empty");
+
+        Line lastLine = lines.get(lines.size() - 1);
+        if (lastLine.getLineType() != LineType.RETURN) {
+            throw new ScopeException("Method must end with return");
+        }
     }
 }

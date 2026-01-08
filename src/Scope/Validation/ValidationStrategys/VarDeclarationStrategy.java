@@ -1,8 +1,8 @@
-package Validation.Strategys;
+package Scope.Validation.ValidationStrategys;
 
 import CodeParser.Line;
 import LineParsing.VarDeclarationParsing;
-import Scopes.Scope;
+import Scope.Scope;
 import main.IllegalCodeException;
 
 public class VarDeclarationStrategy extends BaseStrategy {
