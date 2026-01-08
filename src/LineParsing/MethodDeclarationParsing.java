@@ -4,6 +4,7 @@ import CodeParser.Line;
 import CodeParser.RegexPatterns;
 import Variables.VarTypes;
 import Variables.VariableException;
+import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -11,12 +12,11 @@ import java.util.regex.Pattern;
 
 public class MethodDeclarationParsing extends LineParsing {
     public final String methodName;
-    public final ArrayList<MethodParameter> parameters;
+    public ArrayList<MethodParameter> parameters;
 
     public MethodDeclarationParsing(Line line) throws LineParsingException {
         super(line);
-        this.methodName = extractMethodName(content);
-        this.parameters = extractParameters(content);
+        this.methodName = extractNameBeforeBrackets(content);
     }
 
     public String getMethodName() {
@@ -27,22 +27,11 @@ public class MethodDeclarationParsing extends LineParsing {
         return parameters;
     }
 
-    private String extractMethodName(String content) throws LineParsingException {
-        Pattern p = Pattern.compile("void\\s+" + RegexPatterns.METHOD_NAME + "\\s*\\(");
-        Matcher m = p.matcher(content);
-
-        if (m.find()) {
-            return m.group(1);
-        }
-        throw new LineParsingException("illegal name");
-    }
-
-    private ArrayList<MethodParameter> extractParameters(String content) throws VariableException {
-        ArrayList<MethodParameter> params = new ArrayList<>();
-
+    @Override
+    public void parse() throws IllegalCodeException {
         String paramsContent = extractContentInsideBrackets(content);
         if (paramsContent.isEmpty()) {
-            return params;
+            return;
         }
 
         Pattern p = Pattern.compile(RegexPatterns.FINAL + "(" + RegexPatterns.VAR_TYPE + ")" +
@@ -52,8 +41,7 @@ public class MethodDeclarationParsing extends LineParsing {
             boolean isFinal = (m.group(1) != null);
             VarTypes type = VarTypes.fromString(m.group(2));
             String name = m.group(3);
-            params.add(new MethodParameter(isFinal, type, name));
+            this.parameters.add(new MethodParameter(isFinal, type, name));
         }
-        return params;
     }
 }

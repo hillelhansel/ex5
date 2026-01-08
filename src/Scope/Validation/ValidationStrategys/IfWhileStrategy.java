@@ -14,7 +14,7 @@ public class IfWhileStrategy extends BaseStrategy {
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
         IfWhileParsing parser = new IfWhileParsing(line);
-        ArrayList<String> conditions = parser.getBlockParameters();
+        ArrayList<String> conditions = parser.getParameters();
 
         for (String condition : conditions) {
             try {

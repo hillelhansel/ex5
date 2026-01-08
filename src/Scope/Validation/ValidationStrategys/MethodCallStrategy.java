@@ -21,7 +21,7 @@ public class MethodCallStrategy extends BaseStrategy {
             throw new ScopeException(": Method " + parser.getMethodName() + " not found");
         }
 
-        ArrayList<String> callArgs = parser.getMethodParameters();
+        ArrayList<String> callArgs = parser.getParameters();
         ArrayList<MethodParameter> methodParams = methodToCall.getMethodParams();
 
         if (callArgs.size() != methodParams.size()) {
