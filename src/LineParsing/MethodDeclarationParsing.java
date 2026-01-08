@@ -34,12 +34,12 @@ public class MethodDeclarationParsing extends LineParsing {
         for (String paramStr : paramStrings) {
             Matcher m = getHeaderMatcher(paramStr);
 
-            boolean pIsFinal = (m.group(1) != null);
-            VarTypes pType = VarTypes.fromString(m.group(2));
+            boolean IsFinal = (m.group(1) != null);
+            VarTypes Type = VarTypes.fromString(m.group(2));
 
-            String pName = paramStr.substring(m.end()).trim();
+            String Name = paramStr.substring(m.end()).trim();
 
-            this.parameters.add(new MethodParameter(pIsFinal, pType, pName));
+            this.parameters.add(new MethodParameter(IsFinal, Type, Name));
         }
     }
 }

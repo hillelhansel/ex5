@@ -8,6 +8,7 @@ import Scope.Validation.ValidationStrategys.IfWhileStrategy;
 import Scope.Validation.ValidationStrategys.MethodCallStrategy;
 import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
 import main.IllegalCodeException;
+import Scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class ScopeValidator {
                     index += linesProcessed - 1;
                 }
                 catch (IllegalCodeException e) {
-                    throw new IllegalCodeException(line.getLineIndex() + e.getMessage());
+                    throw new ScopeException(line.getLineIndex(), e.getMessage());
                 }
             }
         }

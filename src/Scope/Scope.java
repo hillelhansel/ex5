@@ -62,7 +62,7 @@ public abstract class Scope {
         return parent;
     }
 
-    protected void addVariable(SObject sObject, String varName) throws ScopeException {
+    public void addVariable(SObject sObject, String varName) throws ScopeException {
         if(this.localVariables.containsKey(varName)){
             throw new ScopeException("variable already exist");
         }

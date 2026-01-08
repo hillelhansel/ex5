@@ -34,8 +34,7 @@ public class VarDeclarationParsing extends LineParsing {
 
         this.isFinal = (m.group(1) != null);
         this.type = VarTypes.fromString(m.group(2));
-
-        String body = content.substring(m.end());
+        String body = content.substring(m.end()).replace(";", "").trim();
 
         this.variables = new ArrayList<>();
         ArrayList<String> parts = splitByComma(body);

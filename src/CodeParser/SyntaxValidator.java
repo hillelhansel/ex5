@@ -53,7 +53,7 @@ public class SyntaxValidator {
                 return entry.getValue();
             }
         }
-        throw new SyntaxException(line.getLineIndex() + "invalid syntax");
+        throw new SyntaxException(line.getLineIndex(), "invalid syntax");
     }
 
     private void createLineClassificationPatterns(){

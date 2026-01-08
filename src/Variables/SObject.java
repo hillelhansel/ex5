@@ -15,15 +15,9 @@ public class SObject {
         this.type = type;
 
         if (value != null) {
-            if (!isValidInput(value)) {
-                throw new VariableException("Invalid input value for type " + type);
-            }
             this.isInitialized = true;
         }
         else {
-            if (isFinal) {
-                throw new VariableException("Final variable '" + name + "' must be initialized");
-            }
             this.isInitialized = false;
         }
     }

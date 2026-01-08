@@ -9,14 +9,14 @@ public class Sjavac {
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println(2);
-            System.err.println("Error: Invalid arguments count. Usage: java Sjavac <file_path>");
+            System.err.println("IO Error: Invalid arguments count. Usage: java Sjavac <file_path>");
             return;
         }
 
         String filePath = args[0];
         if (!filePath.endsWith(".sjava")) {
             System.out.println(2);
-            System.err.println("Error: File must end with .sjava");
+            System.err.println("IO Error: File must end with .sjava");
             return;
         }
 

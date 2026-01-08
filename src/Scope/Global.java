@@ -40,14 +40,14 @@ public class Global extends Scope {
                         break;
 
                     case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
-                        throw new ScopeException(line.getLineIndex() + ": illegal type in global scope");
+                        throw new ScopeException(line.getLineIndex(), "illegal type in global scope");
 
                     default:
                         break;
                 }
             }
             catch (IllegalCodeException e) {
-                throw new IllegalCodeException(line.getLineIndex() + ": " + e.getMessage());
+                throw new IllegalCodeException(line.getLineIndex(), e.getMessage());
             }
         }
     }

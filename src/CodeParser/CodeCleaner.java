@@ -16,12 +16,12 @@ public class CodeCleaner {
         int lineIndex = 0;
         while((line = reader.readLine()) != null){
             lineIndex++;
+            line = line.trim();
             int commentIndex = line.indexOf("//");
             if(commentIndex > 0){
                 throw new SyntaxException(lineIndex + "invalid comment syntax");
             }
 
-            line = line.trim();
             if(line.startsWith("//") || line.isEmpty()){
                 continue;
             }
