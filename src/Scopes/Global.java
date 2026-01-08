@@ -4,7 +4,7 @@ import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
-import Variables.VariableException;
+import Validation.ScopeValidator;
 import main.IllegalCodeException; // Import חשוב
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class Global extends Scope {
     }
 
     private void secondPass() throws IllegalCodeException {
-        ScopeValidation validation = new ScopeValidation();
+        ScopeValidator validation = new ScopeValidator();
 
         for (Method method : methods.values()) {
             try {
