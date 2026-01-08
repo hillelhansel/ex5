@@ -1,7 +1,11 @@
 package Validation.Strategys;
 
+import CodeParser.Line;
 import CodeParser.RegexPatterns;
+import Scopes.Scope;
+import Scopes.ScopeException;
 import Validation.ValidationStrategy;
+import Variables.SObject;
 import Variables.VarTypes;
 
 
@@ -19,5 +23,14 @@ public abstract class BaseStrategy implements ValidationStrategy {
             default: return false;
         }
         return Pattern.matches(regex, value);
+    }
+
+    protected SObject checkVarExist(Line line, Scope scope, String varName) throws ScopeException {
+        SObject targetVar = scope.getObject(varName);
+
+        if (targetVar == null) {
+            throw new ScopeException(": Variable '" + varName + "' is not defined");
+        }
+        return targetVar;
     }
 }

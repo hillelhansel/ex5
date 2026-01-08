@@ -1,7 +1,6 @@
 package Scopes;
 
 import CodeParser.Line;
-import LineParsing.IfWhileParsing;
 import LineParsing.Var;
 import LineParsing.VarDeclarationParsing;
 import Variables.VariableException;
@@ -69,14 +68,14 @@ public abstract class Scope {
         localVariables.put(varName, sObject);
     }
 
-    public int addIfWhile(IfWhileParsing ifWhileParsing, int index) {
-        int methodLength = getBlockLength(lines, index);
-        ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
+    public int addIfWhile(int index) {
+        int blockLength = scopeLength(lines, index);
+        ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + blockLength));
         new Block(this, methodLines);
-        return methodLength;
+        return blockLength;
     }
 
-    protected int getBlockLength(ArrayList<Line> lines, int startIndex) {
+    protected int scopeLength(ArrayList<Line> lines, int startIndex) {
         int openBrackets = 0;
         int count = 0;
         for (int i = startIndex; i < lines.size(); i++) {
@@ -93,27 +92,5 @@ public abstract class Scope {
             }
         }
         return count;
-    }
-
-    public boolean doesObjectExists(String name) {
-        if (localVariables.containsKey(name)) {
-            return true;
-        }
-        else{
-            parent.doesObjectExists(name);
-        }
-        return false;
-    }
-
-
-    private VarTypes getVarType(String name) {
-        if (doesObjectExists(name)) {
-            SObject object = getObject(name);
-            if (object != null){
-                return object.getVarType();
-            }
-            return parent.getVarType(name);
-        }
-        return null;
     }
 }

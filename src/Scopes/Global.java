@@ -67,7 +67,7 @@ public class Global extends Scope {
 
     private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
         String methodName = methodDeclarationParsing.getMethodName();
-        int methodLength = getBlockLength(lines, index);
+        int methodLength = scopeLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
         ArrayList<MethodParameter> methodParameters = methodDeclarationParsing.getParameters();
         methods.put(methodName, new Method(this, methodLines, methodParameters));

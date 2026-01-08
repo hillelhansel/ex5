@@ -24,14 +24,19 @@ public class ScopeValidator {
     }
 
     public void validate(Scope scope) throws IllegalCodeException {
-        ArrayList<Line> lines = scope.getLines();
-        for (int index = 1; index < lines.size(); index++) {
-            Line line = lines.get(index);
+        ArrayList<Line> scopeLines = scope.getLines();
+        for (int index = 1; index < scopeLines.size(); index++) {
+            Line line = scopeLines.get(index);
 
             ValidationStrategy strategy = strategies.get(line.getLineType());
             if (strategy != null) {
-                int linesProcessed = strategy.validate(line, scope, index);
-                index += linesProcessed - 1;
+                try {
+                    int linesProcessed = strategy.validate(line, scope, index);
+                    index += linesProcessed - 1;
+                }
+                catch (IllegalCodeException e) {
+                    throw new IllegalCodeException(line.getLineIndex() + e.getMessage());
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import LineParsing.Var;
 import Scopes.Scope;
 import Scopes.ScopeException;
 import Variables.SObject;
+import Variables.VarTypes;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -19,29 +20,28 @@ public class AssignmentStrategy extends BaseStrategy {
         for (Var var : assignmentVariable) {
             String varName = var.getName();
             String valueExpression = var.getValue();
-            SObject targetVar = scope.getObject(varName);
-
-            if (targetVar == null) {
-                throw new ScopeException(line.getLineIndex() + ": Variable '" + varName + "' is not defined");
-            }
-
+            SObject targetVar = checkVarExist(line, scope, varName);
             if (targetVar.isFinal()) {
-                throw new ScopeException(line.getLineIndex() + ": Cannot modify final variable '" + varName + "'");
+                throw new ScopeException(": Cannot modify final variable '" + varName + "'");
             }
 
             SObject sourceVar = scope.getObject(valueExpression);
+            VarTypes targetVarType = sourceVar.getVarType();
+            VarTypes sourceVarType = sourceVar.getVarType();
+
             if (sourceVar != null) {
                 if (!sourceVar.isInitialized()) {
-                    throw new ScopeException(line.getLineIndex() + ": Variable '" + valueExpression + "' is not initialized");
+                    throw new ScopeException(": Variable '" + valueExpression + "' is not initialized");
                 }
 
-                if (sourceVar.getVarType() != targetVar.getVarType()) {
-                    throw new ScopeException(line.getLineIndex() + ": cannot assign " + sourceVar.getVarType() + " to " + targetVar.getVarType());
+
+                if (sourceVarType != targetVarType) {
+                    throw new ScopeException(": cannot assign " + sourceVarType + " to " + targetVarType);
                 }
             }
             else {
-                if (!isLiteralMatchingType(valueExpression, targetVar.getVarType())) {
-                    throw new ScopeException(line.getLineIndex() + ": value '" + valueExpression + "' is not valid for type " + targetVar.getVarType());
+                if (!isLiteralMatchingType(valueExpression, targetVarType)) {
+                    throw new ScopeException(": value '" + valueExpression + "' is not valid for type " + targetVarType);
                 }
             }
             targetVar.setIsInitialized(true);
