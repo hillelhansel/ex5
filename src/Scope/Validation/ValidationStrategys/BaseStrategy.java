@@ -18,14 +18,30 @@ public abstract class BaseStrategy implements ValidationStrategy {
             if (!sourceVar.isInitialized()) {
                 throw new ScopeException(": Variable '" + valueExpr + "' is not initialized");
             }
-            if (sourceVar.getVarType() != expectedType) {
-                throw new ScopeException(": Type mismatch. Expected " + expectedType + " but got " + sourceVar.getVarType());
+            if (!isTypeCompatible(sourceVar.getVarType(), expectedType)) {
+                throw new ScopeException("Type mismatch. Expected " + expectedType + " but got " + sourceVar.getVarType());
             }
         } else {
             if (!isLiteralMatchingType(valueExpr, expectedType)) {
                 throw new ScopeException(": Value '" + valueExpr + "' is not valid for type " + expectedType);
             }
         }
+    }
+
+    protected boolean isTypeCompatible(VarTypes sourceType, VarTypes expectedType) {
+        if (sourceType == expectedType) {
+            return true;
+        }
+
+        if (expectedType == VarTypes.SDOUBLE && sourceType == VarTypes.SINT) {
+            return true;
+        }
+
+        if (expectedType == VarTypes.SBOOLEAN) {
+            return sourceType == VarTypes.SINT || sourceType == VarTypes.SDOUBLE;
+        }
+
+        return false;
     }
 
     protected boolean isLiteralMatchingType(String value, VarTypes expectedType) {

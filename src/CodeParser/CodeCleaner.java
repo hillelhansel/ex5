@@ -16,11 +16,11 @@ public class CodeCleaner {
         int lineIndex = 0;
         while((line = reader.readLine()) != null){
             lineIndex++;
-            line = line.trim();
             int commentIndex = line.indexOf("//");
             if(commentIndex > 0){
-                throw new SyntaxException(lineIndex + "invalid comment syntax");
+                throw new SyntaxException(lineIndex, "invalid comment syntax");
             }
+            line = line.trim();
 
             if(line.startsWith("//") || line.isEmpty()){
                 continue;
@@ -28,7 +28,7 @@ public class CodeCleaner {
 
             Matcher matcher = pattern.matcher(line);
             if(matcher.lookingAt()){
-                throw new SyntaxException(lineIndex + "invalid comment syntax");
+                throw new SyntaxException(lineIndex, "invalid comment syntax");
             }
             Line newLine = new Line(line, lineIndex, null);
             cleanedCode.add(newLine);

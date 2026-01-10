@@ -3,10 +3,7 @@ package Scope.Validation;
 import CodeParser.Line;
 import CodeParser.LineType;
 import Scope.Scope;
-import Scope.Validation.ValidationStrategys.AssignmentStrategy;
-import Scope.Validation.ValidationStrategys.IfWhileStrategy;
-import Scope.Validation.ValidationStrategys.MethodCallStrategy;
-import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
+import Scope.Validation.ValidationStrategys.*;
 import main.IllegalCodeException;
 import Scope.ScopeException;
 
@@ -21,6 +18,8 @@ public class ScopeValidator {
         strategies.put(LineType.VARIABLE_DECLARATION, new VarDeclarationStrategy());
         strategies.put(LineType.IF_WHILE_BLOCK, new IfWhileStrategy());
         strategies.put(LineType.METHOD_CALL, new MethodCallStrategy());
+        strategies.put(LineType.METHOD_DECLARATION, new MethodDeclarationStrategy());
+        strategies.put(LineType.CLOSING_BRACKET, new ClosingBracketStrategy());
     }
 
     public void validate(Scope scope) throws IllegalCodeException {
@@ -35,6 +34,9 @@ public class ScopeValidator {
                     index += linesProcessed - 1;
                 }
                 catch (IllegalCodeException e) {
+                    if (e.getMessage().startsWith("Error in line")) {
+                        throw e;
+                    }
                     throw new ScopeException(line.getLineIndex(), e.getMessage());
                 }
             }

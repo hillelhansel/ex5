@@ -5,6 +5,8 @@ import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import LineParsing.VarDeclarationParsing;
 import Scope.Validation.ScopeValidator;
+import Scope.Validation.ValidationStrategys.AssignmentStrategy;
+import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
 import main.IllegalCodeException; // Import חשוב
 
 import java.util.ArrayList;
@@ -35,11 +37,14 @@ public class Global extends Scope {
                         break;
 
                     case VARIABLE_DECLARATION:
-                        VarDeclarationParsing parsedLine = new VarDeclarationParsing(line);
-                        addVariables(parsedLine);
+                        new VarDeclarationStrategy().validate(line, this, i);
                         break;
 
-                    case ASSIGNMENT, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
+                    case ASSIGNMENT:
+                        new AssignmentStrategy().validate(line, this, i);
+                        break;
+
+                    case CLOSING_BRACKET, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
                         throw new ScopeException(line.getLineIndex(), "illegal type in global scope");
 
                     default:
