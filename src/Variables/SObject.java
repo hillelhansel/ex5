@@ -1,15 +1,12 @@
 package Variables;
 
-import CodeParser.RegexPatterns;
-import java.util.regex.Pattern;
-
 public class SObject {
     private final boolean isFinal;
     private final String name;
-    private boolean isInitialized;
+    private boolean isInitialized = false;
     private final VarTypes type;
 
-    public SObject(String name, boolean isFinal, VarTypes type, String value) throws VariableException {
+    public SObject(String name, boolean isFinal, VarTypes type, String value) {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;
@@ -17,34 +14,18 @@ public class SObject {
         if (value != null) {
             this.isInitialized = true;
         }
-        else {
-            this.isInitialized = false;
-        }
     }
 
-    public boolean isValidInput(String value) {
-        if (value == null){
-            return false;
+    public void assign(Object newValue) throws VariableException {
+
+        if (isFinal && isInitialized) {
+            throw new VariableException("Cannot assign to final variable");
         }
 
-        String regex;
-        switch(type){
-            case SCHAR: regex = RegexPatterns.CHAR; break;
-            case SINT: regex = RegexPatterns.INT; break;
-            case SBOOLEAN: regex = RegexPatterns.BOOLEAN; break;
-            case SSTRING: regex = RegexPatterns.STRING; break;
-            case SDOUBLE: regex = RegexPatterns.DOUBLE; break;
-            default: return false;
-        }
-        return Pattern.matches(regex, value);
-    }
-
-    public void setValue(String value) throws VariableException {
-        if (isFinal) {
-            throw new VariableException("Cannot assign a value to final variable");
-        }
-        if (!isValidInput(value)) {
-            throw new VariableException("Invalid input value: " + value);
+        if (!type.isValidValue(newValue)) {
+            throw new VariableException(
+                    "Invalid input value for type " + type
+            );
         }
         this.isInitialized = true;
     }

@@ -1,11 +1,7 @@
 package Scope;
 
 import CodeParser.Line;
-import LineParsing.Var;
-import LineParsing.VarDeclarationParsing;
-import Variables.VariableException;
 import Variables.SObject;
-import Variables.VarTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +19,6 @@ public abstract class Scope {
 
     public ArrayList<Line> getLines() {
         return lines;
-    }
-
-    public void addVariables(VarDeclarationParsing parsedLine) throws VariableException, ScopeException {
-        boolean isFinal = parsedLine.isFinal();
-        VarTypes type = parsedLine.getType();
-
-        for(Var var:parsedLine.getVariables()){
-            String varName = var.getName();
-            SObject localVar = new SObject(varName, isFinal, type, var.getValue());
-            addVariable(localVar, varName);
-        }
     }
 
     public SObject getObject(String name) {
@@ -58,7 +43,7 @@ public abstract class Scope {
         throw new ScopeException("Global scope not found structure error");
     }
 
-    public Scope getParent() {
+    protected Scope getParent() {
         return parent;
     }
 
@@ -75,7 +60,7 @@ public abstract class Scope {
         return new Block(this, methodLines);
     }
 
-    public void validateScopeEnd() throws ScopeException { }
+    public void validateScopeEnd() throws ScopeException {}
 
     protected int scopeLength(ArrayList<Line> lines, int startIndex) throws ScopeException {
         int openBrackets = 0;
@@ -94,7 +79,7 @@ public abstract class Scope {
             }
         }
         if(openBrackets != 0){
-            throw new ScopeException(": Missing closing bracket");
+            throw new ScopeException("Missing closing bracket");
         }
         return count;
     }

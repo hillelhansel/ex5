@@ -3,7 +3,6 @@ package Scope;
 import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
-import LineParsing.VarDeclarationParsing;
 import Scope.Validation.ScopeValidator;
 import Scope.Validation.ValidationStrategys.AssignmentStrategy;
 import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
