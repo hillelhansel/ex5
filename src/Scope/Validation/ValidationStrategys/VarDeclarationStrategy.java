@@ -14,7 +14,11 @@ public class VarDeclarationStrategy extends BaseStrategy {
         boolean isFinal = parser.isFinal();
 
         for (Var var : parser.getVariables()) {
-            SObject sObject = new SObject(var.getName(), isFinal, parser.getType(), var.getValue());
+            boolean isInitialized = false;
+            if(var.getValue() != null){
+                isInitialized = true;
+            }
+            SObject sObject = new SObject(var.getName(), isFinal, parser.getType(), isInitialized);
             scope.addVariable(sObject, var.getName());
         }
         return 1;

@@ -3,20 +3,17 @@ package Variables;
 public class SObject {
     private final boolean isFinal;
     private final String name;
-    private boolean isInitialized = false;
+    private boolean isInitialized;
     private final VarTypes type;
 
-    public SObject(String name, boolean isFinal, VarTypes type, String value) throws VariableException {
+    public SObject(String name, boolean isFinal, VarTypes type, boolean isInitialized) throws VariableException {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;
+        this.isInitialized = isInitialized;
 
-        if (isFinal && value == null) {
+        if (isFinal && isInitialized) {
             throw new VariableException("Final variable '" + name + "' must be initialized");
-        }
-
-        if (value != null) {
-            this.isInitialized = true;
         }
     }
 
@@ -42,9 +39,5 @@ public class SObject {
 
     public String getName() {
         return name;
-    }
-
-    public void setIsInitialized() {
-        this.isInitialized = true;
     }
 }

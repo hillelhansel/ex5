@@ -21,8 +21,7 @@ public class Method extends Scope{
             VarTypes type = methodParameter.getType();
             boolean isFinal = methodParameter.isFinal();
 
-            SObject paramObject = new SObject(name, isFinal, type, null);
-            paramObject.setIsInitialized();
+            SObject paramObject = new SObject(name, isFinal, type, true);
 
             addVariable(paramObject, name);
         }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class ScopeValidatorStrategy {
     private final HashMap<LineType, ValidationStrategy> strategies = new HashMap<>();
+    private int startingIndex = 1;
 
     public ScopeValidatorStrategy() {
         strategies.put(LineType.ASSIGNMENT, new AssignmentStrategy());
@@ -22,9 +23,17 @@ public class ScopeValidatorStrategy {
         strategies.put(LineType.CLOSING_BRACKET, new ClosingBracketStrategy());
     }
 
+    public void addStrategy(LineType lineType, ValidationStrategy strategy) {
+        strategies.put(lineType, strategy);
+    }
+
+    public void setStartIndex(int startingIndex) {
+        this.startingIndex = startingIndex;
+    }
+
     public void validate(Scope scope) throws IllegalCodeException {
         ArrayList<Line> scopeLines = scope.getLines();
-        for (int index = 1; index < scopeLines.size(); index++) {
+        for (int index = startingIndex; index < scopeLines.size(); index++) {
             Line line = scopeLines.get(index);
 
             ValidationStrategy strategy = strategies.get(line.getLineType());

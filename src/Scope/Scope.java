@@ -33,6 +33,10 @@ public abstract class Scope {
         return null;
     }
 
+    public ScopeType getScopeType() {
+        return scopeType;
+    }
+
     public Global getGlobalScope() throws ScopeException {
         Scope current = this;
         while (current.getParent() != null) {

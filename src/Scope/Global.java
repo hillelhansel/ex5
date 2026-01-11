@@ -1,11 +1,12 @@
 package Scope;
 
 import CodeParser.Line;
+import CodeParser.LineType;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import Scope.Validation.ScopeValidatorStrategy;
-import Scope.Validation.ValidationStrategys.AssignmentStrategy;
-import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
+import Scope.Validation.ValidationStrategys.ErrorStrategy;
+import Scope.Validation.ValidationStrategys.MethodDeclarationStrategy;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Global extends Scope {
 
     public Global(Scope parent, ArrayList<Line> lines) throws IllegalCodeException {
         super(parent, lines, ScopeType.GLOBAL);
-        firstPass(lines);
+        firstPass();
         secondPass();
     }
 
@@ -25,47 +26,7 @@ public class Global extends Scope {
         return methods;
     }
 
-    private void firstPass(ArrayList<Line> lines) throws IllegalCodeException {
-        for (int i = 0; i < lines.size(); i++) {
-            Line line = lines.get(i);
-            try {
-                switch (line.getLineType()) {
-                    case METHOD_DECLARATION:
-                        MethodDeclarationParsing methodDeclarationParsing = new MethodDeclarationParsing(line);
-                        int methodLength = addMethods(methodDeclarationParsing, i);
-                        i += methodLength - 1;
-                        break;
-
-                    case VARIABLE_DECLARATION:
-                        new VarDeclarationStrategy().validate(line, this, i);
-                        break;
-
-                    case ASSIGNMENT:
-                        new AssignmentStrategy().validate(line, this, i);
-                        break;
-
-                    case CLOSING_BRACKET, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
-                        throw new ScopeException(line.getLineIndex(), "Illegal type in global scope");
-
-                    default:
-                        break;
-                }
-            }
-            catch (IllegalCodeException e) {
-                throw new IllegalCodeException(line.getLineIndex(), e.getMessage());
-            }
-        }
-    }
-
-    private void secondPass() throws IllegalCodeException {
-        ScopeValidatorStrategy validation = new ScopeValidatorStrategy();
-
-        for (Method method : methods.values()) {
-            validation.validate(method);
-        }
-    }
-
-    private int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
+    public int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
         String methodName = methodDeclarationParsing.getMethodName();
         int methodLength = scopeLength(lines, index);
 
@@ -76,4 +37,27 @@ public class Global extends Scope {
 
         return methodLength;
     }
+
+    private void firstPass() throws IllegalCodeException {
+        ScopeValidatorStrategy validator = new ScopeValidatorStrategy();
+        validator.setStartIndex(0);
+        validator.addStrategy(LineType.METHOD_DECLARATION, new MethodDeclarationStrategy());
+
+        ErrorStrategy errorStrategy = new ErrorStrategy("Illegal type in global scope");
+        validator.addStrategy(LineType.IF_WHILE_BLOCK, errorStrategy);
+        validator.addStrategy(LineType.METHOD_CALL, errorStrategy);
+        validator.addStrategy(LineType.RETURN, errorStrategy);
+        validator.addStrategy(LineType.CLOSING_BRACKET, errorStrategy);
+
+        validator.validate(this);
+    }
+
+    private void secondPass() throws IllegalCodeException {
+        ScopeValidatorStrategy validation = new ScopeValidatorStrategy();
+
+        for (Method method : methods.values()) {
+            validation.validate(method);
+        }
+    }
+
 }
