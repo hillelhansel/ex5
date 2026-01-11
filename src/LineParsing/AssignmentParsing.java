@@ -21,7 +21,6 @@ public class AssignmentParsing extends LineParsing {
         this.assignedVars = new ArrayList<>();
 
         String cleanContent = content.replace(";", "").trim();
-
         ArrayList<String> parts = splitByComma(cleanContent);
 
         for (String part : parts) {

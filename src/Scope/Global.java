@@ -3,7 +3,7 @@ package Scope;
 import CodeParser.Line;
 import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
-import Scope.Validation.ScopeValidator;
+import Scope.Validation.ScopeValidatorStrategy;
 import Scope.Validation.ValidationStrategys.AssignmentStrategy;
 import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
 import main.IllegalCodeException;
@@ -58,7 +58,7 @@ public class Global extends Scope {
     }
 
     private void secondPass() throws IllegalCodeException {
-        ScopeValidator validation = new ScopeValidator();
+        ScopeValidatorStrategy validation = new ScopeValidatorStrategy();
 
         for (Method method : methods.values()) {
             validation.validate(method);

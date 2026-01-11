@@ -22,7 +22,7 @@ public class Method extends Scope{
             boolean isFinal = methodParameter.isFinal();
 
             SObject paramObject = new SObject(name, isFinal, type, null);
-            paramObject.setIsInitialized(true);
+            paramObject.setIsInitialized();
 
             addVariable(paramObject, name);
         }

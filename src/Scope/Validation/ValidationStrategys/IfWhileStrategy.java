@@ -5,7 +5,7 @@ import LineParsing.IfWhileParsing;
 import Scope.Block;
 import Scope.Scope;
 import Scope.ScopeException;
-import Scope.Validation.ScopeValidator;
+import Scope.Validation.ScopeValidatorStrategy;
 import Variables.VarTypes;
 import main.IllegalCodeException;
 
@@ -18,21 +18,14 @@ public class IfWhileStrategy extends BaseStrategy {
         ArrayList<String> conditions = parser.getParameters();
 
         for (String condition : conditions) {
-            try {
-                validateValueByType(scope, condition, VarTypes.SBOOLEAN);
-            }
-            catch (ScopeException e) {
-                try {
-                    validateValueByType(scope, condition, VarTypes.SDOUBLE);
-                }
-                catch (ScopeException e2) {
-                    validateValueByType(scope, condition, VarTypes.SINT);
-                }
+            VarTypes type = getTypeOfExpression(scope, condition);
+            if(!type.isTypeCompatible(type, VarTypes.SBOOLEAN)){
+                throw new ScopeException("Condition " + condition + " is not a boolean");
             }
         }
 
         Block newBlock = scope.addIfWhile(index);
-        ScopeValidator innerValidator = new ScopeValidator();
+        ScopeValidatorStrategy innerValidator = new ScopeValidatorStrategy();
         innerValidator.validate(newBlock);
 
         return newBlock.getLines().size();

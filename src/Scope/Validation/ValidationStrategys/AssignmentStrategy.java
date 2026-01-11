@@ -6,6 +6,7 @@ import LineParsing.Var;
 import Scope.Scope;
 import Scope.ScopeException;
 import Variables.SObject;
+import Variables.VarTypes;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -20,14 +21,19 @@ public class AssignmentStrategy extends BaseStrategy {
             String varName = var.getName();
             String valueExpression = var.getValue();
 
-            SObject targetVar = checkVarExist(scope, varName);
-
-            if (targetVar.isFinal()) {
-                throw new ScopeException(": Cannot modify final variable '" + varName + "'");
+            SObject targetVar = scope.getObject(varName);
+            if (targetVar == null) {
+                throw new ScopeException(": Variable '" + varName + "' is not defined");
             }
-            validateValueByType(scope, valueExpression, targetVar.getVarType());
 
-            targetVar.setIsInitialized(true);
+            VarTypes incomingType = getTypeOfExpression(scope, valueExpression);
+
+            try {
+                targetVar.tryAssign(incomingType);
+            }
+            catch (Exception e) {
+                throw new ScopeException(e.getMessage());
+            }
         }
         return 1;
     }

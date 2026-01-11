@@ -10,10 +10,10 @@ import main.IllegalCodeException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ScopeValidator {
+public class ScopeValidatorStrategy {
     private final HashMap<LineType, ValidationStrategy> strategies = new HashMap<>();
 
-    public ScopeValidator() {
+    public ScopeValidatorStrategy() {
         strategies.put(LineType.ASSIGNMENT, new AssignmentStrategy());
         strategies.put(LineType.VARIABLE_DECLARATION, new VarDeclarationStrategy());
         strategies.put(LineType.IF_WHILE_BLOCK, new IfWhileStrategy());
@@ -34,9 +34,6 @@ public class ScopeValidator {
                     index += linesProcessed - 1;
                 }
                 catch (IllegalCodeException e) {
-                    if (e.getMessage().startsWith("Error in line")) {
-                        throw e;
-                    }
                     throw new ScopeException(line.getLineIndex(), e.getMessage());
                 }
             }

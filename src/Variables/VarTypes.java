@@ -26,6 +26,22 @@ public enum VarTypes {
         throw new VariableException("Unknown type: " + typeStr);
     }
 
+    public boolean isTypeCompatible(VarTypes sourceType, VarTypes expectedType) {
+        if (sourceType == expectedType) {
+            return true;
+        }
+
+        if (expectedType == VarTypes.SDOUBLE && sourceType == VarTypes.SINT) {
+            return true;
+        }
+
+        if (expectedType == VarTypes.SBOOLEAN) {
+            return sourceType == VarTypes.SINT || sourceType == VarTypes.SDOUBLE;
+        }
+
+        return false;
+    }
+
     public boolean isValidValue(String value) {
         String regex;
         switch (this) {

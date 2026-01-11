@@ -7,6 +7,7 @@ import Scope.Global;
 import Scope.Method;
 import Scope.Scope;
 import Scope.ScopeException;
+import Variables.VarTypes;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -33,7 +34,10 @@ public class MethodCallStrategy extends BaseStrategy {
             String argValue = callArgs.get(i);
             MethodParameter paramDef = methodParams.get(i);
 
-            validateValueByType(scope, argValue, paramDef.getType());
+            VarTypes type = getTypeOfExpression(scope, argValue);
+            if (!type.isTypeCompatible(type, paramDef.getType())){
+                throw new ScopeException(": Wrong parameter type");
+            }
         }
         return 1;
     }
