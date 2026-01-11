@@ -2,13 +2,14 @@ package Scope.Validation.ValidationStrategys;
 
 import CodeParser.Line;
 import LineParsing.IfWhileParsing;
+import Scope.Block;
 import Scope.Scope;
 import Scope.ScopeException;
 import Scope.Validation.ScopeValidator;
 import Variables.VarTypes;
 import main.IllegalCodeException;
+
 import java.util.ArrayList;
-import Scope.Block;
 
 public class IfWhileStrategy extends BaseStrategy {
     @Override

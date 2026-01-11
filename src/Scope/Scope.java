@@ -10,11 +10,13 @@ public abstract class Scope {
     protected Scope parent;
     protected final ArrayList<Line> lines;
     protected final HashMap<String, SObject> localVariables;
+    private final ScopeType scopeType;
 
-    public Scope(Scope parent, ArrayList<Line> lines) {
+    public Scope(Scope parent, ArrayList<Line> lines, ScopeType scopeType) {
         this.parent = parent;
         this.lines = lines;
         this.localVariables = new HashMap<>();
+        this.scopeType = scopeType;
     }
 
     public ArrayList<Line> getLines() {
@@ -36,11 +38,10 @@ public abstract class Scope {
         while (current.getParent() != null) {
             current = current.getParent();
         }
-        //todo
-        if (current instanceof Global) {
+        if (current.scopeType == ScopeType.GLOBAL) {
             return (Global) current;
         }
-        throw new ScopeException("Global scope not found structure error");
+        throw new ScopeException("Global scope not found");
     }
 
     protected Scope getParent() {
@@ -49,7 +50,7 @@ public abstract class Scope {
 
     public void addVariable(SObject sObject, String varName) throws ScopeException {
         if(this.localVariables.containsKey(varName)){
-            throw new ScopeException("variable already exist");
+            throw new ScopeException("Variable already exist");
         }
         localVariables.put(varName, sObject);
     }

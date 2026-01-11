@@ -13,7 +13,7 @@ public class Method extends Scope{
     private final ArrayList<MethodParameter> methodParameters;
 
     public Method(Scope parent, ArrayList<Line> lines, ArrayList<MethodParameter> methodParameters) throws IllegalCodeException {
-        super(parent, lines);
+        super(parent, lines,  ScopeType.METHOD);
         this.methodParameters = methodParameters;
 
         for (MethodParameter methodParameter : methodParameters) {

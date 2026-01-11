@@ -1,11 +1,12 @@
 package CodeParser;
 
-import static CodeParser.RegexPatterns.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static CodeParser.RegexPatterns.*;
 
 public class SyntaxValidator {
     private static final Pattern VARIABLE_DECLARATION_PATTERN = Pattern.compile(
@@ -23,7 +24,7 @@ public class SyntaxValidator {
 
     private static final Pattern METHOD_CALL_PATTERN = Pattern.compile(
             "^\\s*" + METHOD_NAME + "\\s*\\(\\s*" + "(" + ARGUMENT + "(\\s*,\\s*" + ARGUMENT + ")*"
-                    + ")?" + "\\s*\\)\\s*\\;\\s*$"
+                    + ")?" + "\\s*\\)\\s*;\\s*$"
     );
 
     private static final Pattern IF_WHILE_BLOCK_PATTERN = Pattern.compile(
@@ -53,7 +54,7 @@ public class SyntaxValidator {
                 return entry.getValue();
             }
         }
-        throw new SyntaxException(line.getLineIndex(), "invalid syntax");
+        throw new SyntaxException(line.getLineIndex(), "Invalid syntax");
     }
 
     private void createLineClassificationPatterns(){

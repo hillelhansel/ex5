@@ -8,6 +8,7 @@ import Scope.Method;
 import Scope.Scope;
 import Scope.ScopeException;
 import main.IllegalCodeException;
+
 import java.util.ArrayList;
 
 public class MethodCallStrategy extends BaseStrategy {

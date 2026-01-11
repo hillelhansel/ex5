@@ -64,7 +64,7 @@ public abstract class LineParsing {
         Matcher m = p.matcher(text);
 
         if (!m.find()) {
-            throw new LineParsingException("Cannot identify variable type in: " + text);
+            throw new LineParsingException("Cannot identify variable type in " + text);
         }
         return m;
     }

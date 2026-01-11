@@ -7,6 +7,7 @@ import Scope.Scope;
 import Scope.ScopeException;
 import Variables.SObject;
 import main.IllegalCodeException;
+
 import java.util.ArrayList;
 
 public class AssignmentStrategy extends BaseStrategy {

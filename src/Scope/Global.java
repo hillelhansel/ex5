@@ -6,16 +6,17 @@ import LineParsing.MethodParameter;
 import Scope.Validation.ScopeValidator;
 import Scope.Validation.ValidationStrategys.AssignmentStrategy;
 import Scope.Validation.ValidationStrategys.VarDeclarationStrategy;
-import main.IllegalCodeException; // Import חשוב
+import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class Global extends Scope {
     private final HashMap<String, Method> methods = new HashMap<>();
 
     public Global(Scope parent, ArrayList<Line> lines) throws IllegalCodeException {
-        super(parent, lines);
+        super(parent, lines, ScopeType.GLOBAL);
         firstPass(lines);
         secondPass();
     }
@@ -44,7 +45,7 @@ public class Global extends Scope {
                         break;
 
                     case CLOSING_BRACKET, IF_WHILE_BLOCK, METHOD_CALL, RETURN:
-                        throw new ScopeException(line.getLineIndex(), "illegal type in global scope");
+                        throw new ScopeException(line.getLineIndex(), "Illegal type in global scope");
 
                     default:
                         break;

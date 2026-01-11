@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class CodeCleaner {
     public ArrayList<Line> cleanCode(BufferedReader reader) throws SyntaxException, IOException {
         ArrayList<Line> cleanedCode = new ArrayList<>();
-        String regex = "^(\\{)|\\/(\\*{1,2})";
+        String regex = "^(\\{)|/(\\*{1,2})";
         Pattern pattern = Pattern.compile(regex);
 
         String line;
@@ -18,7 +18,7 @@ public class CodeCleaner {
             lineIndex++;
             int commentIndex = line.indexOf("//");
             if(commentIndex > 0){
-                throw new SyntaxException(lineIndex, "invalid comment syntax");
+                throw new SyntaxException(lineIndex, "Invalid comment syntax");
             }
             line = line.trim();
 
@@ -28,7 +28,7 @@ public class CodeCleaner {
 
             Matcher matcher = pattern.matcher(line);
             if(matcher.lookingAt()){
-                throw new SyntaxException(lineIndex, "invalid comment syntax");
+                throw new SyntaxException(lineIndex, "Invalid comment syntax");
             }
             Line newLine = new Line(line, lineIndex, null);
             cleanedCode.add(newLine);

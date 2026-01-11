@@ -16,17 +16,15 @@ public class SObject {
         }
     }
 
-    public void assign(Object newValue) throws VariableException {
-
+    public void tryAssign(VarTypes incomingType) throws VariableException {
         if (isFinal && isInitialized) {
-            throw new VariableException("Cannot assign to final variable");
+            throw new VariableException("Cannot assign a value to final variable '" + name + "'");
         }
 
-        if (!type.isValidValue(newValue)) {
-            throw new VariableException(
-                    "Invalid input value for type " + type
-            );
+        if (!type.isCompatibleWith(incomingType)) {
+            throw new VariableException("Type mismatch: cannot assign " + incomingType + " to " + type);
         }
+
         this.isInitialized = true;
     }
 
@@ -36,17 +34,5 @@ public class SObject {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isFinal() {
-        return isFinal;
-    }
-
-    public boolean isInitialized() {
-        return isInitialized;
-    }
-
-    public void setIsInitialized(Boolean initialized) {
-        isInitialized = initialized;
     }
 }

@@ -3,9 +3,9 @@ package Scope.Validation;
 import CodeParser.Line;
 import CodeParser.LineType;
 import Scope.Scope;
+import Scope.ScopeException;
 import Scope.Validation.ValidationStrategys.*;
 import main.IllegalCodeException;
-import Scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

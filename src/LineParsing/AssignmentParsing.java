@@ -2,6 +2,7 @@ package LineParsing;
 
 import CodeParser.Line;
 import main.IllegalCodeException;
+
 import java.util.ArrayList;
 
 public class AssignmentParsing extends LineParsing {

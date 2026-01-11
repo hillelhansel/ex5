@@ -4,6 +4,7 @@ import CodeParser.CodeCleaner;
 import CodeParser.Line;
 import CodeParser.SyntaxValidator;
 import Scope.Global;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
