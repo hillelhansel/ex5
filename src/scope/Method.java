@@ -1,9 +1,9 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
-import CodeParser.LineType;
-import Scope.LineHandlers.MethodParameter;
-import Variables.SObject;
+import syntax.Line;
+import syntax.LineType;
+import scope.LineHandlers.MethodParameter;
+import object.SObject;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
-import Variables.SObject;
-import Variables.VarTypes;
+import syntax.Line;
+import object.SObject;
+import object.ObjectType;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public abstract class Scope {
 
 
 
-    public VarTypes resolveExpressionType(String valueExpr) throws ScopeException {
+    public ObjectType resolveExpressionType(String valueExpr) throws ScopeException {
         SObject sourceVar = getObject(valueExpr);
         if (sourceVar != null) {
             if (!sourceVar.isInitialized()) {
@@ -38,7 +38,7 @@ public abstract class Scope {
             return sourceVar.getVarType();
         }
 
-        for (VarTypes type : VarTypes.values()) {
+        for (ObjectType type : ObjectType.values()) {
             if (type.isValidValue(valueExpr)) {
                 return type;
             }

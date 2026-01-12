@@ -1,8 +1,8 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
-import CodeParser.LineType;
-import Scope.LineHandlers.*;
+import syntax.Line;
+import syntax.LineType;
+import scope.LineHandlers.*;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -20,10 +20,14 @@ public class ScopeValidator {
         handlers.put(LineType.METHOD_DECLARATION, new MethodDeclarationHandler());
     }
 
+    public void setStartingIndex(int index) {
+        this.startingIndex = index;
+    }
+
     public void validate(Scope scope) throws IllegalCodeException {
         ArrayList<Line> lines = scope.getLines();
 
-        for (int i = 0; i < lines.size(); i++) {
+        for (int i = startingIndex; i < lines.size(); i++) {
             Line line = lines.get(i);
 
             try{

@@ -1,4 +1,4 @@
-package Scope;
+package scope;
 
 import main.IllegalCodeException;
 
@@ -7,7 +7,7 @@ public class ScopeException extends IllegalCodeException {
         super(message);
     }
 
-    public ScopeException(int line, String message) {
-        super(line, message);
+    public ScopeException(int lineIndex, String message) {
+        super(lineIndex, message);
     }
 }

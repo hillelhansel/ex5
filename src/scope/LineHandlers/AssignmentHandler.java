@@ -1,10 +1,10 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.Line;
-import Scope.Scope;
-import Scope.LineHandler;
-import Variables.SObject;
-import Variables.VarTypes;
+import syntax.Line;
+import scope.Scope;
+import scope.LineHandler;
+import object.SObject;
+import object.ObjectType;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class AssignmentHandler implements LineHandler {
 
             SObject targetVar = scope.resolveObject(varName);
 
-            VarTypes incomingType = scope.resolveExpressionType(valueExpression);
+            ObjectType incomingType = scope.resolveExpressionType(valueExpression);
             targetVar.tryAssign(incomingType);
         }
         return 1;

@@ -1,4 +1,4 @@
-package CodeParser;
+package syntax;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static CodeParser.RegexPatterns.*;
+import static syntax.RegexPatterns.*;
 
 public class SyntaxValidator {
     private final HashMap<Pattern, LineType> patterns = new HashMap<>();

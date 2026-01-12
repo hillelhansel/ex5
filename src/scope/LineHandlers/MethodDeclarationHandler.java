@@ -1,13 +1,13 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.Line;
-import Scope.Scope;
-import Scope.LineHandler;
-import Variables.VarTypes;
+import syntax.Line;
+import scope.Scope;
+import scope.LineHandler;
+import object.ObjectType;
 import main.IllegalCodeException;
-import Scope.ScopeType;
-import Scope.Global;
-import Scope.ScopeException;
+import scope.ScopeType;
+import scope.Global;
+import scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -27,7 +27,7 @@ public class MethodDeclarationHandler implements LineHandler {
             Matcher m = lineParsing.getHeaderMatcher(paramStr);
 
             boolean IsFinal = (m.group(1) != null);
-            VarTypes Type = VarTypes.fromString(m.group(2));
+            ObjectType Type = ObjectType.fromString(m.group(2));
 
             String Name = paramStr.substring(m.end()).trim();
 

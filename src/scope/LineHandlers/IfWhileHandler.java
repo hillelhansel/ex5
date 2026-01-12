@@ -1,12 +1,12 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.Line;
-import CodeParser.RegexPatterns;
-import Scope.Scope;
-import Scope.LineHandler;
-import Variables.VarTypes;
+import syntax.Line;
+import syntax.RegexPatterns;
+import scope.Scope;
+import scope.LineHandler;
+import object.ObjectType;
 import main.IllegalCodeException;
-import Scope.ScopeException;
+import scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +33,9 @@ public class IfWhileHandler implements LineHandler {
         ArrayList<String> conditions = parameters;
 
         for (String condition : conditions) {
-            VarTypes type = scope.resolveExpressionType(condition);
+            ObjectType type = scope.resolveExpressionType(condition);
 
-            if(!type.isTypeCompatible(type, VarTypes.SBOOLEAN)){
+            if(!type.isTypeCompatible(type, ObjectType.SBOOLEAN)){
                 throw new ScopeException("Condition " + condition + " is not a boolean");
             }
         }

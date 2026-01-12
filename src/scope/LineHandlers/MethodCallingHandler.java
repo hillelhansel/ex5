@@ -1,13 +1,13 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.Line;
-import Scope.Scope;
-import Scope.LineHandler;
-import Variables.VarTypes;
+import syntax.Line;
+import scope.Scope;
+import scope.LineHandler;
+import object.ObjectType;
 import main.IllegalCodeException;
-import Scope.Global;
-import Scope.Method;
-import Scope.ScopeException;
+import scope.Global;
+import scope.Method;
+import scope.ScopeException;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class MethodCallingHandler implements LineHandler {
             String argValue = callArgs.get(i);
             MethodParameter paramDef = methodParams.get(i);
 
-            VarTypes type = scope.resolveExpressionType(argValue);
+            ObjectType type = scope.resolveExpressionType(argValue);
             if (!type.isTypeCompatible(type, paramDef.getType())){
                 throw new ScopeException(": Wrong parameter type");
             }

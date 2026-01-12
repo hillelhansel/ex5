@@ -1,4 +1,4 @@
-package CodeParser;
+package syntax;
 
 import java.io.BufferedReader;
 import java.io.IOException;

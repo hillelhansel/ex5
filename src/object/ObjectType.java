@@ -1,10 +1,10 @@
-package Variables;
+package object;
 
-import CodeParser.RegexPatterns;
+import syntax.RegexPatterns;
 
 import java.util.regex.Pattern;
 
-public enum VarTypes {
+public enum ObjectType {
     SINT("int"),
     SDOUBLE("double"),
     SSTRING("String"),
@@ -13,30 +13,30 @@ public enum VarTypes {
 
     private final String typeName;
 
-    VarTypes(String typeName) {
+    ObjectType(String typeName) {
         this.typeName = typeName;
     }
 
-    public static VarTypes fromString(String typeStr) throws VariableException {
-        for (VarTypes type : VarTypes.values()) {
+    public static ObjectType fromString(String typeStr) throws ObjectException {
+        for (ObjectType type : ObjectType.values()) {
             if (type.typeName.equals(typeStr)) {
                 return type;
             }
         }
-        throw new VariableException("Unknown type: " + typeStr);
+        throw new ObjectException("Unknown type: " + typeStr);
     }
 
-    public boolean isTypeCompatible(VarTypes sourceType, VarTypes expectedType) {
+    public boolean isTypeCompatible(ObjectType sourceType, ObjectType expectedType) {
         if (sourceType == expectedType) {
             return true;
         }
 
-        if (expectedType == VarTypes.SDOUBLE && sourceType == VarTypes.SINT) {
+        if (expectedType == ObjectType.SDOUBLE && sourceType == ObjectType.SINT) {
             return true;
         }
 
-        if (expectedType == VarTypes.SBOOLEAN) {
-            return sourceType == VarTypes.SINT || sourceType == VarTypes.SDOUBLE;
+        if (expectedType == ObjectType.SBOOLEAN) {
+            return sourceType == ObjectType.SINT || sourceType == ObjectType.SDOUBLE;
         }
 
         return false;

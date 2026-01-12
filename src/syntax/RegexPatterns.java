@@ -1,4 +1,4 @@
-package CodeParser;
+package syntax;
 
 import java.util.regex.Pattern;
 

@@ -1,4 +1,4 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
 public class Var {
     private final String name;

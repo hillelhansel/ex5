@@ -1,10 +1,10 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.Line;
-import Scope.Scope;
-import Scope.LineHandler;
-import Variables.SObject;
-import Variables.VarTypes;
+import syntax.Line;
+import scope.Scope;
+import scope.LineHandler;
+import object.SObject;
+import object.ObjectType;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 
 public class VarDeclarationHandler implements LineHandler {
     private boolean isFinal;
-    private VarTypes type;
+    private ObjectType type;
     private ArrayList<Var> variables;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
 
@@ -20,7 +20,7 @@ public class VarDeclarationHandler implements LineHandler {
         Matcher m = lineParsing.getHeaderMatcher(content);
 
         this.isFinal = (m.group(1) != null);
-        this.type = VarTypes.fromString(m.group(2));
+        this.type = ObjectType.fromString(m.group(2));
         String body = content.substring(m.end()).replace(";", "").trim();
 
         this.variables = new ArrayList<>();
@@ -34,10 +34,10 @@ public class VarDeclarationHandler implements LineHandler {
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
         parse(line.getContent());
-        VarTypes declaredType = type;
+        ObjectType declaredType = type;
 
         for (Var var : variables) {
-            VarTypes valueType = null;
+            ObjectType valueType = null;
 
             if (var.getValue() != null) {
                 valueType = scope.resolveExpressionType(var.getValue());

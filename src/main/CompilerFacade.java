@@ -1,9 +1,9 @@
 package main;
 
-import CodeParser.CodeCleaner;
-import CodeParser.Line;
-import CodeParser.SyntaxValidator;
-import Scope.Global;
+import syntax.CodeCleaner;
+import syntax.Line;
+import syntax.SyntaxValidator;
+import scope.Global;
 
 import java.io.BufferedReader;
 import java.io.IOException;

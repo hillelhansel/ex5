@@ -1,6 +1,6 @@
-package Scope.LineHandlers;
+package scope.LineHandlers;
 
-import CodeParser.RegexPatterns;
+import syntax.RegexPatterns;
 
 import java.util.ArrayList;
 import java.util.Arrays;

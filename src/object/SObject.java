@@ -1,12 +1,12 @@
-package Variables;
+package object;
 
 public class SObject {
     private final boolean isFinal;
     private final String name;
     private boolean isInitialized;
-    private final VarTypes type;
+    private final ObjectType type;
 
-    public SObject(String name, boolean isFinal, VarTypes type, VarTypes incomingType) throws VariableException {
+    public SObject(String name, boolean isFinal, ObjectType type, ObjectType incomingType) throws ObjectException {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;
@@ -17,23 +17,23 @@ public class SObject {
         }
         else {
             if (isFinal) {
-                throw new VariableException("Final variable '" + name + "' must be initialized");
+                throw new ObjectException("Final variable '" + name + "' must be initialized");
             }
             this.isInitialized = false;
         }
     }
 
-    public void tryAssign(VarTypes incomingType) throws VariableException {
+    public void tryAssign(ObjectType incomingType) throws ObjectException {
         if (isFinal && isInitialized) {
-            throw new VariableException("Cannot assign a value to final variable '" + name + "'");
+            throw new ObjectException("Cannot assign a value to final variable '" + name + "'");
         }
         validateAssignment(incomingType);
         this.isInitialized = true;
     }
 
-    private void validateAssignment(VarTypes incomingType) throws VariableException {
+    private void validateAssignment(ObjectType incomingType) throws ObjectException {
         if (!type.isTypeCompatible(incomingType, this.type)) {
-            throw new VariableException("Type mismatch: cannot assign " + incomingType + " to " + type);
+            throw new ObjectException("Type mismatch: cannot assign " + incomingType + " to " + type);
         }
     }
 
@@ -41,7 +41,7 @@ public class SObject {
         return isInitialized;
     }
 
-    public VarTypes getVarType(){
+    public ObjectType getVarType(){
         return type;
     }
 

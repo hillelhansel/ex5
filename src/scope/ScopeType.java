@@ -1,4 +1,4 @@
-package Scope;
+package scope;
 
 public enum ScopeType {
     GLOBAL,

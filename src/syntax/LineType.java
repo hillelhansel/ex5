@@ -1,4 +1,4 @@
-package CodeParser;
+package syntax;
 
 public enum LineType {
     VARIABLE_DECLARATION,

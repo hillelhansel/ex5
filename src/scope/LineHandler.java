@@ -1,6 +1,6 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
+import syntax.Line;
 import main.IllegalCodeException;
 
 public interface LineHandler {

@@ -1,7 +1,7 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
-import CodeParser.LineType;
+import syntax.Line;
+import syntax.LineType;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;

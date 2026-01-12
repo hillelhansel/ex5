@@ -6,7 +6,7 @@ public class IllegalCodeException extends Exception {
         super(message);
     }
 
-    public IllegalCodeException(int line, String message) {
-        super("Error in line " + line + ": " + message);
+    public IllegalCodeException(int lineIndex, String message) {
+        super("Error in line " + lineIndex + ": " + message);
     }
 }

@@ -1,7 +1,7 @@
-package Scope;
+package scope;
 
-import CodeParser.Line;
-import Scope.LineHandlers.MethodParameter;
+import syntax.Line;
+import scope.LineHandlers.MethodParameter;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public class Global extends Scope {
     private final HashMap<String, Method> methods = new HashMap<>();
+    private final ScopeValidator validation = new ScopeValidator();
+
 
     public Global(Scope parent, ArrayList<Line> lines) throws IllegalCodeException {
         super(parent, lines, ScopeType.GLOBAL);
@@ -32,7 +34,7 @@ public class Global extends Scope {
     }
 
     private void firstPass() throws IllegalCodeException {
-        ScopeValidator validation = new ScopeValidator();
+        validation.setStartingIndex(0);
         validation.validate(this);
     }
 
@@ -49,8 +51,7 @@ public class Global extends Scope {
     }
 
     private void secondPass() throws IllegalCodeException {
-        ScopeValidator validation = new ScopeValidator();
-
+        validation.setStartingIndex(1);
         for (Method method : methods.values()) {
             validation.validate(method);
         }
