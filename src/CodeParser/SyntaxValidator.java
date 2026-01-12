@@ -9,10 +9,19 @@ import java.util.regex.Pattern;
 import static CodeParser.RegexPatterns.*;
 
 public class SyntaxValidator {
-    private static final HashMap<Pattern, LineType> patterns = new HashMap<>();
+    private final HashMap<Pattern, LineType> patterns = new HashMap<>();
+
+    public SyntaxValidator() {
+        patterns.put(VARIABLE_DECLARATION_PATTERN, LineType.VARIABLE_DECLARATION);
+        patterns.put(METHOD_DECLARATION_PATTERN, LineType.METHOD_DECLARATION);
+        patterns.put(IF_WHILE_BLOCK_PATTERN, LineType.IF_WHILE_BLOCK);
+        patterns.put(RETURN_PATTERN, LineType.RETURN);
+        patterns.put(CLOSING_BRACKET_PATTERN, LineType.CLOSING_BRACKET);
+        patterns.put(ASSIGNMENT_PATTERN, LineType.ASSIGNMENT);
+        patterns.put(METHOD_CALL_PATTERN, LineType.METHOD_CALL);
+    }
 
     public void validateCode(ArrayList<Line> code) throws SyntaxException {
-        createLineClassificationPatterns();
         for(Line line : code) {
             LineType lineType = checkLine(line);
             line.setLineType(lineType);
@@ -29,15 +38,5 @@ public class SyntaxValidator {
             }
         }
         throw new SyntaxException(line.getLineIndex(), "Invalid syntax");
-    }
-
-    private void createLineClassificationPatterns(){
-        patterns.put(VARIABLE_DECLARATION_PATTERN, LineType.VARIABLE_DECLARATION);
-        patterns.put(METHOD_DECLARATION_PATTERN, LineType.METHOD_DECLARATION);
-        patterns.put(IF_WHILE_BLOCK_PATTERN, LineType.IF_WHILE_BLOCK);
-        patterns.put(RETURN_PATTERN, LineType.RETURN);
-        patterns.put(CLOSING_BRACKET_PATTERN, LineType.CLOSING_BRACKET);
-        patterns.put(ASSIGNMENT_PATTERN, LineType.ASSIGNMENT);
-        patterns.put(METHOD_CALL_PATTERN, LineType.METHOD_CALL);
     }
 }

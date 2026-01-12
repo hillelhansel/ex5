@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 public class MethodDeclarationParsing {
     private String methodName;
     private ArrayList<MethodParameter> parameters;
-    private LineParsingUtility lineParsing;
+    private LineParsingUtility lineParsing = new LineParsingUtility();
 
 
     public ValidationStrategy getValidationStrategy() {

@@ -14,7 +14,7 @@ public class VarDeclarationParsing {
     private boolean isFinal;
     private VarTypes type;
     private ArrayList<Var> variables;
-    private LineParsingUtility lineParsing;
+    private LineParsingUtility lineParsing = new LineParsingUtility();
 
 
     public ValidationStrategy getValidationStrategy() {

@@ -6,7 +6,6 @@ import LineParsing.MethodDeclarationParsing;
 import LineParsing.MethodParameter;
 import Scope.Validation.ScopeValidatorStrategy;
 import Scope.Validation.ValidationStrategys.ErrorStrategy;
-import Scope.Validation.ValidationStrategys.MethodDeclarationStrategy;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class Global extends Scope {
     private void firstPass() throws IllegalCodeException {
         ScopeValidatorStrategy validator = new ScopeValidatorStrategy();
         validator.setStartIndex(0);
-        validator.addStrategy(LineType.METHOD_DECLARATION, new MethodDeclarationStrategy());
+        validator.addStrategy(LineType.METHOD_DECLARATION, new MethodDeclarationParsing().getValidationStrategy());
 
         ErrorStrategy errorStrategy = new ErrorStrategy("Illegal type in global scope");
         validator.addStrategy(LineType.IF_WHILE_BLOCK, errorStrategy);

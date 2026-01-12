@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class AssignmentParsing {
     private ArrayList<Var> assignedVars;
-    private LineParsingUtility lineParsing;
+    private LineParsingUtility lineParsing = new LineParsingUtility();
 
     public ValidationStrategy getValidationStrategy() {
         return new AssignmentStrategy();

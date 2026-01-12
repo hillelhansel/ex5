@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MethodCallingParsing {
     private String methodName;
     private ArrayList<String> parameters;
-    private LineParsingUtility lineParsing;
+    private LineParsingUtility lineParsing = new LineParsingUtility();
 
 
     public ValidationStrategy getValidationStrategy() {

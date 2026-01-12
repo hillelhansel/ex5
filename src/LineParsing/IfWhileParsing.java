@@ -6,6 +6,7 @@ import Scope.Scope;
 import Scope.Validation.ValidationStrategy;
 import Variables.VarTypes;
 import main.IllegalCodeException;
+import Scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class IfWhileParsing {
     private ArrayList<String> parameters;
-    private LineParsingUtility lineParsing;
+    private LineParsingUtility lineParsing = new LineParsingUtility();
 
     public ValidationStrategy getValidationStrategy() {
         return new IfWhileStrategy();
