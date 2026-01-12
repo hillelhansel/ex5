@@ -3,9 +3,10 @@ package Scope.Validation.ValidationStrategys;
 import CodeParser.Line;
 import Scope.Scope;
 import Scope.ScopeException;
+import Scope.Validation.ValidationStrategy;
 import main.IllegalCodeException;
 
-public class ClosingBracketStrategy extends BaseStrategy {
+public class ClosingBracketStrategy implements ValidationStrategy {
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {

@@ -26,12 +26,10 @@ public class Global extends Scope {
         return methods;
     }
 
-    public int addMethods(MethodDeclarationParsing methodDeclarationParsing, int index) throws IllegalCodeException {
-        String methodName = methodDeclarationParsing.getMethodName();
+    public int addMethod(String methodName, ArrayList<MethodParameter> methodParameters, int index) throws IllegalCodeException {
         int methodLength = scopeLength(lines, index);
 
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));
-        ArrayList<MethodParameter> methodParameters = methodDeclarationParsing.getParameters();
 
         methods.put(methodName, new Method(this, methodLines, methodParameters));
 

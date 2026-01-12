@@ -17,13 +17,9 @@ public class Method extends Scope{
         this.methodParameters = methodParameters;
 
         for (MethodParameter methodParameter : methodParameters) {
-            String name = methodParameter.getName();
-            VarTypes type = methodParameter.getType();
-            boolean isFinal = methodParameter.isFinal();
-
-            SObject paramObject = new SObject(name, isFinal, type, true);
-
-            addVariable(paramObject, name);
+            SObject paramObject = new SObject(methodParameter.getName(), methodParameter.isFinal(),
+                    methodParameter.getType(), methodParameter.getType());
+            addVariable(paramObject, methodParameter.getName());
         }
     }
 

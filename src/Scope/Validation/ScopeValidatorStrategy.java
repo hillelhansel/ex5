@@ -2,6 +2,7 @@ package Scope.Validation;
 
 import CodeParser.Line;
 import CodeParser.LineType;
+import LineParsing.AssignmentParsing;
 import Scope.Scope;
 import Scope.ScopeException;
 import Scope.Validation.ValidationStrategys.*;
@@ -15,7 +16,7 @@ public class ScopeValidatorStrategy {
     private int startingIndex = 1;
 
     public ScopeValidatorStrategy() {
-        strategies.put(LineType.ASSIGNMENT, new AssignmentStrategy());
+        strategies.put(LineType.ASSIGNMENT, new AssignmentParsing());
         strategies.put(LineType.VARIABLE_DECLARATION, new VarDeclarationStrategy());
         strategies.put(LineType.IF_WHILE_BLOCK, new IfWhileStrategy());
         strategies.put(LineType.METHOD_CALL, new MethodCallStrategy());

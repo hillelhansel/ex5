@@ -3,9 +3,10 @@ package Scope.Validation.ValidationStrategys;
 import CodeParser.Line;
 import Scope.Scope;
 import Scope.ScopeException;
+import Scope.Validation.ValidationStrategy;
 import main.IllegalCodeException;
 
-public class ErrorStrategy extends BaseStrategy {
+public class ErrorStrategy implements ValidationStrategy {
     String errorMsg;
     public ErrorStrategy(String errorMsg) {
         this.errorMsg = errorMsg;

@@ -9,29 +9,7 @@ import java.util.regex.Pattern;
 import static CodeParser.RegexPatterns.*;
 
 public class SyntaxValidator {
-    private static final Pattern VARIABLE_DECLARATION_PATTERN = Pattern.compile(
-            "^\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?" +
-                    "(\\s*,\\s*" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?)*" + "\\s*;\\s*$");
-
-    private static final Pattern ASSIGNMENT_PATTERN = Pattern.compile(
-            "^\\s*" + VAR_NAME + "\\s*=\\s*" + ARGUMENT + "\\s*;\\s*$");
-
-    private static final Pattern METHOD_DECLARATION_PATTERN = Pattern.compile(
-            "^\\s*void\\s+" + METHOD_NAME + "\\s*\\(\\s*" + "(" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME +
-                    "(\\s*,\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + ")*" + ")?" + "\\s*\\)\\s*\\{\\s*$");
-
-    private static final Pattern METHOD_CALL_PATTERN = Pattern.compile(
-            "^\\s*" + METHOD_NAME + "\\s*\\(\\s*" + "(" + ARGUMENT + "(\\s*,\\s*" + ARGUMENT + ")*"
-                    + ")?" + "\\s*\\)\\s*;\\s*$");
-
-    private static final Pattern IF_WHILE_BLOCK_PATTERN = Pattern.compile(
-            "^\\s*(if|while)\\s*\\(\\s*" + ARGUMENT + "(" + LOGICAL_OPS + ARGUMENT + ")*" +
-                    "\\s*\\)\\s*\\{\\s*$");
-
-    private static final Pattern RETURN_PATTERN = Pattern.compile("^\\s*return\\s*;\\s*$");
-    private static final Pattern CLOSING_BRACKET_PATTERN = Pattern.compile("^\\s*}\\s*$");
-
-    public static final HashMap<Pattern, LineType> patterns = new HashMap<>();
+    private static final HashMap<Pattern, LineType> patterns = new HashMap<>();
 
     public void validateCode(ArrayList<Line> code) throws SyntaxException {
         createLineClassificationPatterns();

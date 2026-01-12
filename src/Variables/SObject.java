@@ -6,14 +6,20 @@ public class SObject {
     private boolean isInitialized;
     private final VarTypes type;
 
-    public SObject(String name, boolean isFinal, VarTypes type, boolean isInitialized) throws VariableException {
+    public SObject(String name, boolean isFinal, VarTypes type, VarTypes incomingType) throws VariableException {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;
-        this.isInitialized = isInitialized;
 
-        if (isFinal && isInitialized) {
-            throw new VariableException("Final variable '" + name + "' must be initialized");
+        if (incomingType != null) {
+            validateAssignment(incomingType);
+            this.isInitialized = true;
+        }
+        else {
+            if (isFinal) {
+                throw new VariableException("Final variable '" + name + "' must be initialized");
+            }
+            this.isInitialized = false;
         }
     }
 
@@ -21,12 +27,14 @@ public class SObject {
         if (isFinal && isInitialized) {
             throw new VariableException("Cannot assign a value to final variable '" + name + "'");
         }
+        validateAssignment(incomingType);
+        this.isInitialized = true;
+    }
 
-        if (!type.isTypeCompatible(type, incomingType)) {
+    private void validateAssignment(VarTypes incomingType) throws VariableException {
+        if (!type.isTypeCompatible(incomingType, this.type)) {
             throw new VariableException("Type mismatch: cannot assign " + incomingType + " to " + type);
         }
-
-        this.isInitialized = true;
     }
 
     public boolean isInitialized() {

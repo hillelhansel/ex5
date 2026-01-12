@@ -1,7 +1,10 @@
 package Scope;
 
 import CodeParser.Line;
+import Scope.Validation.ScopeValidatorStrategy;
 import Variables.SObject;
+import Variables.VarTypes;
+import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +26,39 @@ public abstract class Scope {
         return lines;
     }
 
-    public SObject getObject(String name) {
+    public VarTypes resolveExpressionType(String valueExpr) throws ScopeException {
+        SObject sourceVar = getObject(valueExpr);
+        if (sourceVar != null) {
+            if (!sourceVar.isInitialized()) {
+                throw new ScopeException("Variable '" + valueExpr + "' is not initialized");
+            }
+            return sourceVar.getVarType();
+        }
+
+        for (VarTypes type : VarTypes.values()) {
+            if (type.isValidValue(valueExpr)) {
+                return type;
+            }
+        }
+
+        throw new ScopeException("Invalid value: " + valueExpr);
+    }
+
+    public SObject resolveObject(String name) throws ScopeException {
+        SObject obj = getObject(name);
+        if (obj == null) {
+            throw new ScopeException(": Variable '" + name + "' is not defined");
+        }
+        return obj;
+    }
+
+    public int openIfWhileBlock(int index) throws IllegalCodeException {
+        Block block = addIfWhile(index);
+        new ScopeValidatorStrategy().validate(block);
+        return block.getLines().size();
+    }
+
+    private SObject getObject(String name) {
         if (localVariables.containsKey(name)) {
             return localVariables.get(name);
         }
