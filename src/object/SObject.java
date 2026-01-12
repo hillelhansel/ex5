@@ -23,6 +23,10 @@ public class SObject {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void tryAssign(ObjectType incomingType) throws ObjectException {
         if (isFinal && isInitialized) {
             throw new ObjectException("Cannot assign a value to final variable '" + name + "'");
@@ -31,21 +35,16 @@ public class SObject {
         this.isInitialized = true;
     }
 
+    public ObjectType getTypeIfInitialized() throws ObjectException {
+        if (!isInitialized) {
+            throw new ObjectException("Variable '" + name + "' is not initialized");
+        }
+        return type;
+    }
+
     private void validateAssignment(ObjectType incomingType) throws ObjectException {
         if (!type.isTypeCompatible(incomingType, this.type)) {
             throw new ObjectException("Type mismatch: cannot assign " + incomingType + " to " + type);
         }
-    }
-
-    public boolean isInitialized() {
-        return isInitialized;
-    }
-
-    public ObjectType getVarType(){
-        return type;
-    }
-
-    public String getName() {
-        return name;
     }
 }

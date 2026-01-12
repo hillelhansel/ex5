@@ -1,9 +1,9 @@
 package scope;
 
-import syntax.Line;
-import object.SObject;
-import object.ObjectType;
 import main.IllegalCodeException;
+import object.ObjectType;
+import object.SObject;
+import syntax.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,18 +24,24 @@ public abstract class Scope {
     public ArrayList<Line> getLines() {
         return lines;
     }
+
+    public ScopeType getScopeType() {
+        return scopeType;
+    }
+
     public abstract void validateLine(Line line) throws IllegalCodeException;
+
     public void validateScopeEnd() throws ScopeException {}
-
-
 
     public ObjectType resolveExpressionType(String valueExpr) throws ScopeException {
         SObject sourceVar = getObject(valueExpr);
+
         if (sourceVar != null) {
-            if (!sourceVar.isInitialized()) {
-                throw new ScopeException("Variable '" + valueExpr + "' is not initialized");
+            try {
+                return sourceVar.getTypeIfInitialized();
+            } catch (IllegalCodeException e) {
+                throw new ScopeException(e.getMessage());
             }
-            return sourceVar.getVarType();
         }
 
         for (ObjectType type : ObjectType.values()) {
@@ -61,20 +67,6 @@ public abstract class Scope {
         return block.getLines().size();
     }
 
-    private SObject getObject(String name) {
-        if (localVariables.containsKey(name)) {
-            return localVariables.get(name);
-        }
-        if (parent != null) {
-            return parent.getObject(name);
-        }
-        return null;
-    }
-
-    public ScopeType getScopeType() {
-        return scopeType;
-    }
-
     public Global getGlobalScope() throws ScopeException {
         Scope current = this;
         while (current.getParent() != null) {
@@ -84,10 +76,6 @@ public abstract class Scope {
             return (Global) current;
         }
         throw new ScopeException("Global scope not found");
-    }
-
-    protected Scope getParent() {
-        return parent;
     }
 
     public void addVariable(SObject sObject, String varName) throws ScopeException {
@@ -101,6 +89,10 @@ public abstract class Scope {
         int blockLength = scopeLength(lines, index);
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + blockLength));
         return new Block(this, methodLines);
+    }
+
+    protected Scope getParent() {
+        return parent;
     }
 
     protected int scopeLength(ArrayList<Line> lines, int startIndex) throws ScopeException {
@@ -123,5 +115,15 @@ public abstract class Scope {
             throw new ScopeException("Missing closing bracket");
         }
         return count;
+    }
+
+    private SObject getObject(String name) {
+        if (localVariables.containsKey(name)) {
+            return localVariables.get(name);
+        }
+        if (parent != null) {
+            return parent.getObject(name);
+        }
+        return null;
     }
 }

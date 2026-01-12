@@ -1,10 +1,10 @@
 package scope;
 
+import main.IllegalCodeException;
+import object.SObject;
+import scope.LineHandlers.MethodParameter;
 import syntax.Line;
 import syntax.LineType;
-import scope.LineHandlers.MethodParameter;
-import object.SObject;
-import main.IllegalCodeException;
 
 import java.util.ArrayList;
 

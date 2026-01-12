@@ -1,8 +1,8 @@
 package scope;
 
-import syntax.Line;
-import scope.LineHandlers.MethodParameter;
 import main.IllegalCodeException;
+import scope.LineHandlers.MethodParameter;
+import syntax.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;

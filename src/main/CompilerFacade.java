@@ -1,9 +1,9 @@
 package main;
 
+import scope.Global;
 import syntax.CodeCleaner;
 import syntax.Line;
 import syntax.SyntaxValidator;
-import scope.Global;
 
 import java.io.BufferedReader;
 import java.io.IOException;

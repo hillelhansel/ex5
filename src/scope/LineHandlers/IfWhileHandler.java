@@ -1,12 +1,12 @@
 package scope.LineHandlers;
 
+import main.IllegalCodeException;
+import object.ObjectType;
+import scope.LineHandler;
+import scope.Scope;
+import scope.ScopeException;
 import syntax.Line;
 import syntax.RegexPatterns;
-import scope.Scope;
-import scope.LineHandler;
-import object.ObjectType;
-import main.IllegalCodeException;
-import scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,17 +15,6 @@ import java.util.stream.Collectors;
 public class IfWhileHandler implements LineHandler {
     private ArrayList<String> parameters;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
-
-    public void parse(String content) {
-        String insideBrackets = lineParsing.extractContentInsideBrackets(content);
-
-        String[] parts = insideBrackets.split(RegexPatterns.LOGICAL_OPS);
-
-        this.parameters = Arrays.stream(parts)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
@@ -41,6 +30,17 @@ public class IfWhileHandler implements LineHandler {
         }
 
         return scope.openIfWhileBlock(index);
+    }
+
+    private void parse(String content) {
+        String insideBrackets = lineParsing.extractContentInsideBrackets(content);
+
+        String[] parts = insideBrackets.split(RegexPatterns.LOGICAL_OPS);
+
+        this.parameters = Arrays.stream(parts)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

@@ -1,13 +1,9 @@
 package scope.LineHandlers;
 
-import syntax.Line;
-import scope.Scope;
-import scope.LineHandler;
-import object.ObjectType;
 import main.IllegalCodeException;
-import scope.Global;
-import scope.Method;
-import scope.ScopeException;
+import object.ObjectType;
+import scope.*;
+import syntax.Line;
 
 import java.util.ArrayList;
 
@@ -15,12 +11,6 @@ public class MethodCallingHandler implements LineHandler {
     private String methodName;
     private ArrayList<String> parameters;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
-
-    public void parse(String content) {
-        this.methodName = lineParsing.extractNameBeforeBrackets(content);
-        String insideBrackets = lineParsing.extractContentInsideBrackets(content);
-        this.parameters = lineParsing.splitByComma(insideBrackets);
-    }
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
@@ -51,4 +41,9 @@ public class MethodCallingHandler implements LineHandler {
         return 1;
     }
 
+    private  void parse(String content) {
+        this.methodName = lineParsing.extractNameBeforeBrackets(content);
+        String insideBrackets = lineParsing.extractContentInsideBrackets(content);
+        this.parameters = lineParsing.splitByComma(insideBrackets);
+    }
 }

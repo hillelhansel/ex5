@@ -1,27 +1,17 @@
 package scope.LineHandlers;
 
-import syntax.Line;
-import scope.Scope;
-import scope.LineHandler;
-import object.SObject;
-import object.ObjectType;
 import main.IllegalCodeException;
+import object.ObjectType;
+import object.SObject;
+import scope.LineHandler;
+import scope.Scope;
+import syntax.Line;
 
 import java.util.ArrayList;
 
 public class AssignmentHandler implements LineHandler {
     private ArrayList<Var> assignedVars;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
-
-    public void parse(String content) {
-        this.assignedVars = new ArrayList<>();
-        String cleanContent = content.replace(";", "").trim();
-        ArrayList<String> parts = lineParsing.splitByComma(cleanContent);
-
-        for (String part : parts) {
-            assignedVars.add(lineParsing.parseVarPart(part));
-        }
-    }
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
@@ -38,6 +28,16 @@ public class AssignmentHandler implements LineHandler {
             targetVar.tryAssign(incomingType);
         }
         return 1;
+    }
+
+    private void parse(String content) {
+        this.assignedVars = new ArrayList<>();
+        String cleanContent = content.replace(";", "").trim();
+        ArrayList<String> parts = lineParsing.splitByComma(cleanContent);
+
+        for (String part : parts) {
+            assignedVars.add(lineParsing.parseVarPart(part));
+        }
     }
 }
 

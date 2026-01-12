@@ -1,9 +1,9 @@
 package scope;
 
+import main.IllegalCodeException;
+import scope.LineHandlers.*;
 import syntax.Line;
 import syntax.LineType;
-import scope.LineHandlers.*;
-import main.IllegalCodeException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

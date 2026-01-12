@@ -1,8 +1,8 @@
 package scope;
 
+import main.IllegalCodeException;
 import syntax.Line;
 import syntax.LineType;
-import main.IllegalCodeException;
 
 import java.util.ArrayList;
 
