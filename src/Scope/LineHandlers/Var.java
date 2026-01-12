@@ -1,4 +1,4 @@
-package LineParsing;
+package Scope.LineHandlers;
 
 public class Var {
     private final String name;

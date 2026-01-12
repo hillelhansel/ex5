@@ -1,7 +1,6 @@
 package Scope;
 
 import CodeParser.Line;
-import Scope.Validation.ScopeValidatorStrategy;
 import Variables.SObject;
 import Variables.VarTypes;
 import main.IllegalCodeException;
@@ -25,6 +24,10 @@ public abstract class Scope {
     public ArrayList<Line> getLines() {
         return lines;
     }
+    public abstract void validateLine(Line line) throws IllegalCodeException;
+    public void validateScopeEnd() throws ScopeException {}
+
+
 
     public VarTypes resolveExpressionType(String valueExpr) throws ScopeException {
         SObject sourceVar = getObject(valueExpr);
@@ -54,7 +57,7 @@ public abstract class Scope {
 
     public int openIfWhileBlock(int index) throws IllegalCodeException {
         Block block = addIfWhile(index);
-        new ScopeValidatorStrategy().validate(block);
+        new ScopeValidator().validate(block);
         return block.getLines().size();
     }
 
@@ -99,8 +102,6 @@ public abstract class Scope {
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + blockLength));
         return new Block(this, methodLines);
     }
-
-    public void validateScopeEnd() throws ScopeException {}
 
     protected int scopeLength(ArrayList<Line> lines, int startIndex) throws ScopeException {
         int openBrackets = 0;

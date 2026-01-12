@@ -1,4 +1,4 @@
-package LineParsing;
+package Scope.LineHandlers;
 
 import CodeParser.RegexPatterns;
 

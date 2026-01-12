@@ -1,10 +1,8 @@
-package Scope.Validation;
+package Scope;
 
 import CodeParser.Line;
-import Scope.Scope;
 import main.IllegalCodeException;
 
-public interface ValidationStrategy{
+public interface LineHandler {
     int validate(Line line, Scope scope, int index) throws IllegalCodeException;
-    void parse(String content);
 }

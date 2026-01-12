@@ -1,8 +1,8 @@
-package LineParsing;
+package Scope.LineHandlers;
 
 import CodeParser.Line;
 import Scope.Scope;
-import Scope.Validation.ValidationStrategy;
+import Scope.LineHandler;
 import Variables.VarTypes;
 import main.IllegalCodeException;
 import Scope.ScopeType;
@@ -11,15 +11,10 @@ import Scope.ScopeException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-public class MethodDeclarationParsing {
+public class MethodDeclarationHandler implements LineHandler {
     private String methodName;
     private ArrayList<MethodParameter> parameters;
-    private LineParsingUtility lineParsing = new LineParsingUtility();
-
-
-    public ValidationStrategy getValidationStrategy() {
-        return new MethodDeclarationStrategy();
-    }
+    private final LineParsingUtility lineParsing = new LineParsingUtility();
 
     public void parse(String content) throws IllegalCodeException {
         this.methodName = lineParsing.extractNameBeforeBrackets(content);
@@ -40,15 +35,13 @@ public class MethodDeclarationParsing {
         }
     }
 
-    public class MethodDeclarationStrategy implements ValidationStrategy {
-        @Override
-        public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-            parse(line.getContent());
-            if (scope.getScopeType() != ScopeType.GLOBAL) {
-                throw new ScopeException("Global scope not found");
-            }
-            Global global = (Global) scope;
-            return global.addMethod(methodName, parameters, index);
+    @Override
+    public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
+        parse(line.getContent());
+        if (scope.getScopeType() != ScopeType.GLOBAL) {
+            throw new ScopeException("Global scope not found");
         }
+        Global global = (Global) scope;
+        return global.addMethod(methodName, parameters, index);
     }
 }

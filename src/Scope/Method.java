@@ -2,9 +2,8 @@ package Scope;
 
 import CodeParser.Line;
 import CodeParser.LineType;
-import LineParsing.MethodParameter;
+import Scope.LineHandlers.MethodParameter;
 import Variables.SObject;
-import Variables.VarTypes;
 import main.IllegalCodeException;
 
 import java.util.ArrayList;
@@ -28,13 +27,16 @@ public class Method extends Scope{
     }
 
     @Override
-    public void validateScopeEnd() throws ScopeException {
-        if (lines.isEmpty()){
-            throw new ScopeException("Method cannot be empty");
+    public void validateLine(Line line) throws ScopeException {
+        if (line.getLineType() == LineType.METHOD_DECLARATION) {
+            throw new ScopeException("Nested methods not allowed");
         }
+    }
 
-        Line lastLine = lines.get(lines.size() - 2);
-        if (lastLine.getLineType() != LineType.RETURN) {
+    @Override
+    public void validateScopeEnd() throws ScopeException {
+        Line last = lines.get(lines.size() - 2);
+        if (last.getLineType() != LineType.RETURN) {
             throw new ScopeException("Method must end with return");
         }
     }
