@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class ScopeValidator {
     private final HashMap<LineType, LineHandler> handlers = new HashMap<>();
-    private int startingIndex = 1;
 
     public ScopeValidator() {
         handlers.put(LineType.ASSIGNMENT, new AssignmentHandler());
@@ -20,11 +19,7 @@ public class ScopeValidator {
         handlers.put(LineType.METHOD_DECLARATION, new MethodDeclarationHandler());
     }
 
-    public void setStartingIndex(int index) {
-        this.startingIndex = index;
-    }
-
-    public void validate(Scope scope) throws IllegalCodeException {
+    public void validate(Scope scope, int startingIndex) throws IllegalCodeException {
         ArrayList<Line> lines = scope.getLines();
 
         for (int i = startingIndex; i < lines.size(); i++) {

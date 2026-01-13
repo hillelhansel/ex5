@@ -11,42 +11,46 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class VarDeclarationHandler implements LineHandler {
-    private boolean isFinal;
-    private ObjectType type;
-    private ArrayList<Var> variables;
+
     private final LineParsingUtility lineParsing = new LineParsingUtility();
+
+    private static class DeclarationData {
+        boolean isFinal;
+        ObjectType type;
+        ArrayList<Var> variables;
+    }
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-        parse(line.getContent());
-        ObjectType declaredType = type;
+        DeclarationData data = parse(line.getContent());
 
-        for (Var var : variables) {
+        for (Var var : data.variables) {
             ObjectType valueType = null;
 
             if (var.getValue() != null) {
                 valueType = scope.resolveExpressionType(var.getValue());
             }
 
-            SObject sObject = new SObject(var.getName(), isFinal, declaredType, valueType);
+            SObject sObject = new SObject(var.getName(), data.isFinal, data.type, valueType);
 
             scope.addVariable(sObject, var.getName());
         }
         return 1;
     }
 
-    private void parse(String content) throws IllegalCodeException {
+    private DeclarationData parse(String content) throws IllegalCodeException {
         Matcher m = lineParsing.getHeaderMatcher(content);
 
-        this.isFinal = (m.group(1) != null);
-        this.type = ObjectType.fromString(m.group(2));
+        DeclarationData data = new DeclarationData();
+        data.isFinal = (m.group(1) != null);
+        data.type = ObjectType.fromString(m.group(2));
+
         String body = content.substring(m.end()).replace(";", "").trim();
+        data.variables = new ArrayList<>();
 
-        this.variables = new ArrayList<>();
-        ArrayList<String> parts = lineParsing.splitByComma(body);
-
-        for (String part : parts) {
-            this.variables.add(lineParsing.parseVarPart(part));
+        for (String part : lineParsing.splitByComma(body)) {
+            data.variables.add(lineParsing.parseVarPart(part));
         }
+        return data;
     }
 }

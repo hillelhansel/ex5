@@ -8,42 +8,44 @@ import syntax.Line;
 import java.util.ArrayList;
 
 public class MethodCallingHandler implements LineHandler {
-    private String methodName;
-    private ArrayList<String> parameters;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
+
+    private static class MethodCallData {
+        String name;
+        ArrayList<String> args;
+    }
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-        parse(line.getContent());
-        Global global = scope.getGlobalScope();
+        MethodCallData call = parse(line.getContent());
 
-        Method methodToCall = global.getMethods().get(methodName);
-        if (methodToCall == null) {
-            throw new ScopeException(": Method " + methodName + " not found");
+        Method method = scope.getGlobalScope().getMethods().get(call.name);
+        if (method == null) {
+            throw new ScopeException("Method " + call.name + " not found");
         }
 
-        ArrayList<String> callArgs = parameters;
-        ArrayList<MethodParameter> methodParams = methodToCall.getMethodParams();
-
-        if (callArgs.size() != methodParams.size()) {
-            throw new ScopeException(": Wrong number of parameters");
+        if (call.args.size() != method.getMethodParams().size()) {
+            throw new ScopeException("Wrong number of parameters");
         }
 
-        for (int i = 0; i < callArgs.size(); i++) {
-            String argValue = callArgs.get(i);
-            MethodParameter paramDef = methodParams.get(i);
+        for (int i = 0; i < call.args.size(); i++) {
+            ObjectType argType = scope.resolveExpressionType(call.args.get(i));
+            ObjectType expected = method.getMethodParams().get(i).getType();
 
-            ObjectType type = scope.resolveExpressionType(argValue);
-            if (!type.isTypeCompatible(type, paramDef.getType())){
-                throw new ScopeException(": Wrong parameter type");
+            if (!argType.isTypeCompatible(argType, expected)) {
+                throw new ScopeException("Wrong parameter type");
             }
         }
         return 1;
     }
 
-    private  void parse(String content) {
-        this.methodName = lineParsing.extractNameBeforeBrackets(content);
-        String insideBrackets = lineParsing.extractContentInsideBrackets(content);
-        this.parameters = lineParsing.splitByComma(insideBrackets);
+    private MethodCallData parse(String content) {
+        MethodCallData data = new MethodCallData();
+        data.name = lineParsing.extractNameBeforeBrackets(content);
+        data.args = lineParsing.splitByComma(
+                lineParsing.extractContentInsideBrackets(content)
+        );
+        return data;
     }
+
 }

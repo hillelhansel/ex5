@@ -63,7 +63,7 @@ public abstract class Scope {
 
     public int openIfWhileBlock(int index) throws IllegalCodeException {
         Block block = addIfWhile(index);
-        new ScopeValidator().validate(block);
+        new ScopeValidator().validate(block, 0);
         return block.getLines().size();
     }
 

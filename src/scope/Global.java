@@ -35,8 +35,7 @@ public class Global extends Scope {
     }
 
     private void firstPass() throws IllegalCodeException {
-        validation.setStartingIndex(0);
-        validation.validate(this);
+        validation.validate(this, 1);
     }
 
     @Override
@@ -52,9 +51,8 @@ public class Global extends Scope {
     }
 
     private void secondPass() throws IllegalCodeException {
-        validation.setStartingIndex(1);
         for (Method method : methods.values()) {
-            validation.validate(method);
+            validation.validate(method, 0);
         }
     }
 

@@ -8,36 +8,37 @@ import syntax.Line;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 public class MethodDeclarationHandler implements LineHandler {
-    private String methodName;
-    private ArrayList<MethodParameter> parameters;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
 
+    private static class MethodDeclData {
+        String name;
+        ArrayList<MethodParameter> params;
+    }
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-        parse(line.getContent());
+        MethodDeclData data = parse(line.getContent());
+
         if (scope.getScopeType() != ScopeType.GLOBAL) {
             throw new ScopeException("Global scope not found");
         }
-        Global global = (Global) scope;
-        return global.addMethod(methodName, parameters, index);
+
+        return ((Global) scope).addMethod(data.name, data.params, index);
     }
 
-    private void parse(String content) throws IllegalCodeException {
-        this.methodName = lineParsing.extractNameBeforeBrackets(content);
+    private MethodDeclData parse(String content) throws IllegalCodeException {
+        MethodDeclData data = new MethodDeclData();
+        data.name = lineParsing.extractNameBeforeBrackets(content);
+        data.params = new ArrayList<>();
+
         String paramsContent = lineParsing.extractContentInsideBrackets(content);
-
-        this.parameters = new ArrayList<>();
-        ArrayList<String> paramStrings = lineParsing.splitByComma(paramsContent);
-
-        for (String paramStr : paramStrings) {
+        for (String paramStr : lineParsing.splitByComma(paramsContent)) {
             Matcher m = lineParsing.getHeaderMatcher(paramStr);
-
-            boolean IsFinal = (m.group(1) != null);
-            ObjectType Type = ObjectType.fromString(m.group(2));
-
-            String Name = paramStr.substring(m.end()).trim();
-
-            this.parameters.add(new MethodParameter(IsFinal, Type, Name));
+            boolean isFinal = (m.group(1) != null);
+            ObjectType type = ObjectType.fromString(m.group(2));
+            String name = paramStr.substring(m.end()).trim();
+            data.params.add(new MethodParameter(isFinal, type, name));
         }
+        return data;
     }
+
 }

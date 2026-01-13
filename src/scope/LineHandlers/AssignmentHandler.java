@@ -10,34 +10,34 @@ import syntax.Line;
 import java.util.ArrayList;
 
 public class AssignmentHandler implements LineHandler {
-    private ArrayList<Var> assignedVars;
     private final LineParsingUtility lineParsing = new LineParsingUtility();
 
     @Override
     public int validate(Line line, Scope scope, int index) throws IllegalCodeException {
-        parse(line.getContent());
-        ArrayList<Var> assignmentVariable = assignedVars;
+        ArrayList<Var> assignedVars = parse(line.getContent());
 
-        for (Var var : assignmentVariable) {
+        for (Var var : assignedVars) {
             String varName = var.getName();
             String valueExpression = var.getValue();
 
             SObject targetVar = scope.resolveObject(varName);
-
             ObjectType incomingType = scope.resolveExpressionType(valueExpression);
+
             targetVar.tryAssign(incomingType);
         }
         return 1;
     }
 
-    private void parse(String content) {
-        this.assignedVars = new ArrayList<>();
+    private ArrayList<Var> parse(String content) {
+        ArrayList<Var> result = new ArrayList<>();
+
         String cleanContent = content.replace(";", "").trim();
         ArrayList<String> parts = lineParsing.splitByComma(cleanContent);
 
         for (String part : parts) {
-            assignedVars.add(lineParsing.parseVarPart(part));
+            result.add(lineParsing.parseVarPart(part));
         }
+        return result;
     }
 }
 
