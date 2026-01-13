@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class VarDeclarationHandler implements LineHandler {
-
     private final LineParsingUtility lineParsing = new LineParsingUtility();
 
     private static class DeclarationData {
