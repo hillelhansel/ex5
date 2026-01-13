@@ -6,7 +6,10 @@ public class SObject {
     private boolean isInitialized;
     private final ObjectType type;
 
-    public SObject(String name, boolean isFinal, ObjectType type, ObjectType incomingType) throws ObjectException {
+    public SObject(String name,
+                   boolean isFinal,
+                   ObjectType type,
+                   ObjectType incomingType) throws ObjectException {
         this.name = name;
         this.isFinal = isFinal;
         this.type = type;

@@ -12,7 +12,6 @@ public class Global extends Scope {
     private final HashMap<String, Method> methods = new HashMap<>();
     private final ScopeValidator validation = new ScopeValidator();
 
-
     public Global(Scope parent, ArrayList<Line> lines) throws IllegalCodeException {
         super(parent, lines, ScopeType.GLOBAL);
         firstPass();
@@ -23,7 +22,9 @@ public class Global extends Scope {
         return methods;
     }
 
-    public int addMethod(String methodName, ArrayList<MethodParameter> methodParameters, int index) throws IllegalCodeException {
+    public int addMethod(String methodName,
+                         ArrayList<MethodParameter> methodParameters,
+                         int index) throws IllegalCodeException {
         int methodLength = scopeLength(lines, index);
 
         ArrayList<Line> methodLines = new ArrayList<>(lines.subList(index, index + methodLength));

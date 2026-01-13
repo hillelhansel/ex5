@@ -5,7 +5,6 @@ import syntax.RegexPatterns;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class LineParsingUtility {
@@ -49,8 +48,7 @@ public class LineParsingUtility {
     }
 
     public Matcher getHeaderMatcher(String text) throws LineParsingException {
-        Pattern p = Pattern.compile("^\\s*" + RegexPatterns.FINAL + "(" + RegexPatterns.VAR_TYPE + ")");
-        Matcher m = p.matcher(text);
+        Matcher m = RegexPatterns.HEADER_MATCHER.matcher(text);
 
         if (!m.find()) {
             throw new LineParsingException("Cannot identify variable type in " + text);

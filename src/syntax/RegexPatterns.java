@@ -3,7 +3,7 @@ package syntax;
 import java.util.regex.Pattern;
 
 public class RegexPatterns {
-    public static final String VAR_NAME = "(?:[a-zA-Z][a-zA-Z\\d_]*|_[a-zA-Z][a-zA-Z\\d_]*)";
+    public static final String VAR_NAME = "(_?[a-zA-Z][a-zA-Z\\\\d_]*)";
     public static final String METHOD_NAME = "([a-zA-Z][a-zA-Z\\d_]*)";
     public static final String VAR_TYPE = "(int|double|String|boolean|char)\\b";
     public static final String INT = "[+-]?\\d+";
@@ -17,6 +17,9 @@ public class RegexPatterns {
     public static final String FINAL = "(final\\s+)?";
     public static final String LOGICAL_OPS = "\\s*(\\|\\||&&)\\s*";
 
+    public static final Pattern HEADER_MATCHER = Pattern.compile("^\\s*" + RegexPatterns.FINAL +
+            "(" + RegexPatterns.VAR_TYPE + ")");
+
     public static final Pattern VARIABLE_DECLARATION_PATTERN = Pattern.compile(
             "^\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?" +
                     "(\\s*,\\s*" + VAR_NAME + "(\\s*=\\s*" + ARGUMENT + ")?)*" + "\\s*;\\s*$");
@@ -25,8 +28,9 @@ public class RegexPatterns {
             "^\\s*" + VAR_NAME + "\\s*=\\s*" + ARGUMENT + "\\s*;\\s*$");
 
     public static final Pattern METHOD_DECLARATION_PATTERN = Pattern.compile(
-            "^\\s*void\\s+" + METHOD_NAME + "\\s*\\(\\s*" + "(" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME +
-                    "(\\s*,\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + ")*" + ")?" + "\\s*\\)\\s*\\{\\s*$");
+            "^\\s*void\\s+" + METHOD_NAME + "\\s*\\(\\s*" + "(" + FINAL + VAR_TYPE + "\\s+" +
+                    VAR_NAME + "(\\s*,\\s*" + FINAL + VAR_TYPE + "\\s+" + VAR_NAME + ")*" + ")?" +
+                    "\\s*\\)\\s*\\{\\s*$");
 
     public static final Pattern METHOD_CALL_PATTERN = Pattern.compile(
             "^\\s*" + METHOD_NAME + "\\s*\\(\\s*" + "(" + ARGUMENT + "(\\s*,\\s*" + ARGUMENT + ")*"
