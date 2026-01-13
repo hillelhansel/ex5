@@ -22,6 +22,18 @@ public class Global extends Scope {
         return methods;
     }
 
+    @Override
+    public void validateLine(Line line) throws ScopeException {
+        switch (line.getLineType()) {
+            case METHOD_DECLARATION:
+            case VARIABLE_DECLARATION:
+            case ASSIGNMENT:
+                return;
+            default:
+                throw new ScopeException("Illegal line in global scope");
+        }
+    }
+
     public int addMethod(String methodName,
                          ArrayList<MethodParameter> methodParameters,
                          int index) throws IllegalCodeException {
@@ -35,24 +47,12 @@ public class Global extends Scope {
     }
 
     private void firstPass() throws IllegalCodeException {
-        validation.validate(this, 1);
-    }
-
-    @Override
-    public void validateLine(Line line) throws ScopeException {
-        switch (line.getLineType()) {
-            case METHOD_DECLARATION:
-            case VARIABLE_DECLARATION:
-            case ASSIGNMENT:
-                return;
-            default:
-                throw new ScopeException("Illegal line in global scope");
-        }
+        validation.validate(this, 0);
     }
 
     private void secondPass() throws IllegalCodeException {
         for (Method method : methods.values()) {
-            validation.validate(method, 0);
+            validation.validate(method, 1);
         }
     }
 
